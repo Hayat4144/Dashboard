@@ -8,8 +8,7 @@
     <script>
       // initial theme check
       const userTheme = localStorage.getItem("theme");
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (userTheme === "dark" || (!userTheme && systemTheme)) {
+      if (userTheme === "dark") {
       document.documentElement.classList.add("dark");
       localStorage.setItem('theme' , 'dark')
     }
