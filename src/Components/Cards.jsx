@@ -7,7 +7,7 @@ export default function Cards() {
          lg:grid-cols-3 gap-5 my-5 mx-5 md:mx-10'>
                 {
                     [1, 2, 3].map((cards, index) => (
-                        <div className='cards border  dark:bg-gray-800 dark:border-none  shadow-2xl h-28 px-5 py-2  
+                        <div key={index} className='cards border  dark:bg-gray-800 dark:border-none  shadow-2xl h-28 px-5 py-2  
                         cursor-pointer  duration-300  border-gray-300 rounded-md  hover:translate-y-2'>
                             <h1 className='card_name text-xl dark:text-gray-100'>Orders</h1>
                             <h2 className='orders_value flex items-center space-x-4 dark:text-gray-100  my-2'>
