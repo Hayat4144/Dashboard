@@ -32,6 +32,8 @@ export default function AsideNavbar() {
     localStorage.setItem("theme", "dark");
     setTheme("dark");
   };
+
+
   return (
     <Fragment>
       <aside
@@ -42,14 +44,14 @@ export default function AsideNavbar() {
         <div className="logo my-5">
           {isCollapsed ? (
             <BsArrowRightShort
-              className="text-gray-900 bg-white rounded-full absolute top-5 -right-3 border border-gray-500 
-         text-3xl cursor-pointer"
+              className="text-gray-900 bg-white dark:bg-indigo-700 dark:text-white rounded-full absolute top-5 -right-3 border border-gray-400 
+         text-3xl cursor-pointer  dark:border-gray-500"
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
           ) : (
             <BsArrowLeftShort
-              className="text-gray-900 absolute top-5 -right-3 bg-white rounded-full
-        border-gray-500 border text-3xl cursor-pointer"
+              className="text-gray-900 absolute top-5 -right-3 dark:bg-indigo-700 dark:text-white bg-white rounded-full
+        border-gray-400 border text-3xl cursor-pointer"
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
           )}

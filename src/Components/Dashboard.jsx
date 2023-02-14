@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import AsideNavbar from '../global/AsideNavbar'
 import Cards from './Cards'
 import TransactionSample from './TransactionSample'
-import WelcomeMessage from './WelcomeMessage'
+import WelcomeMessage from '../global/WelcomeMessage'
 
 export default function Dashboard() {
     return (
