@@ -13,6 +13,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsArrowRightShort } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function AsideNavbar() {
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
@@ -59,15 +60,16 @@ export default function AsideNavbar() {
         </div>
         <div className="nav_links">
           <ul className="space-y-1 my-5 mx-3 cursor-pointer">
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
-              <DashboardCustomizeOutlinedIcon className="dark:text-white" />
-              <span
-                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-              >
-                {" "}
-                Dashboard
-              </span>
-            </li>
+            <Link to="/">
+              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
+                <DashboardCustomizeOutlinedIcon className="dark:text-white" />
+                <span
+                  className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+                >
+                  Dashboard
+                </span>
+              </li>
+            </Link>
             <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
               <AnalyticsOutlinedIcon className="dark:text-white" />
               <span
@@ -86,15 +88,16 @@ export default function AsideNavbar() {
                 Orders
               </span>
             </li>
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
-              <Inventory2OutlinedIcon className="dark:text-white" />
-              <span
-                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-              >
-                {" "}
-                Products
-              </span>
-            </li>
+            <Link to="/v3/seller/products">
+              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
+                <Inventory2OutlinedIcon className="dark:text-white" />
+
+                <span
+                  className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+                >Products
+                </span>
+              </li>
+            </Link>
             <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
               <SellOutlinedIcon className="dark:text-white" />{" "}
               <span
