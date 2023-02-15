@@ -24,10 +24,10 @@ export default function AddProducts() {
             {console.log(uploaded_images)}
             <div className='flex'>
                 <AsideNavbar />
-                <main className='add_product_page w-full h-full dark:bg-gray-800'>
-                    <h1 className='product_add_text dark:text-gray-200 my-5 mx-5 md:mx-8 lg:mx-10'>Add product</h1>
-                    <form className='mx-5 my-5 grid grid-cols-1 lg:grid-cols-2  gap-5 rounded-md shadow-2xl
-                    border border-gray-400  px-5'>
+                <main className='add_product_page w-full h-full dark:bg-gray-900'>
+                    <h1 className='product_add_text dark:text-gray-200 my-5 mx-5 md:mx-8 lg:mx-10 text-2xl'>Add a new product</h1>
+                    <form className='mx-5 my-5 grid grid-cols-1 lg:grid-cols-2  gap-5 rounded-lg  shadow-2xl
+                      px-5 dark:bg-gray-800 py-5'>
                         <div className='products_attributes md:grid md:grid-cols-2 gap-5'>
                             <div className='product_name my-1'>
                                 <label htmlFor="name" className='dark:text-gray-200 text-gray-700'>Name</label>
