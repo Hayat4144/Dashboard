@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, Suspense, lazy } from "react";
 import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
@@ -14,12 +14,24 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsArrowRightShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
+const MobileNavbar = lazy(() => import('./MobileNavbar'))
 
 export default function AsideNavbar() {
+  const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // ----------------- stop scrolling if the modal is open ------------------- //
+  if (isMobileViewOpen) {
+    document.body.classList.toggle('modal-open');
+  }
+  else {
+    document.body.classList.remove('modal-open')
+  }
 
+  const MobileSideModalToggle = (state) => {
+    setIsMobileViewOpen(!state)
+  }
 
   // theme switcher function
   const ThemeSwithcherFunc = () => {
@@ -33,14 +45,14 @@ export default function AsideNavbar() {
     localStorage.setItem("theme", "dark");
     setTheme("dark");
   };
-
+ 
 
   return (
     <Fragment>
       <aside
-        className={`aside_navbar ${!isCollapsed ? "w-72" : "text-center w-20"
+        className={`aside_navbar hidden ${!isCollapsed ? "w-72" : "text-center w-20"
           }  h-screen sticky top-0  text-gray-900 duration-300 border-r border-gray-500
-        ${theme !== 'dark' ? 'border-r border-gray-400' : ''} dark:bg-gray-800 shadow-lg`}
+        ${theme !== 'dark' ? 'border-r border-gray-400' : ''} hidden md:block dark:bg-gray-800 shadow-lg`}
       >
         <div className="logo my-5">
           {isCollapsed ? (
@@ -132,29 +144,24 @@ export default function AsideNavbar() {
               <span
                 className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
               >
-                {" "}
                 Settings
               </span>
             </li>
+            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md" onClick={ThemeSwithcherFunc}>
+              <button>
+                {theme === "dark" ? (
+                  <LightModeIcon className="dark:text-white" />
+                ) : (
+                  <DarkModeOutlinedIcon className="dark:text-white" />
+                )}
+              </button>
+              <span
+                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+              >
+                Toogle dark mode
+              </span>
+            </li>
           </ul>
-        </div>
-        <div
-          className={` ${isCollapsed ? "mx-7" : "mx-5"
-            } space-x-3 flex cursor-pointer dark_mode_toggle`}
-          onClick={ThemeSwithcherFunc}
-        >
-          <button>
-            {theme === "dark" ? (
-              <LightModeIcon className="dark:text-white" />
-            ) : (
-              <DarkModeOutlinedIcon className="dark:text-white" />
-            )}
-          </button>
-          <span
-            className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-          >
-            Toogle dark mode
-          </span>
         </div>
         <div className={`logout_section absolute bottom-5 flex space-x-4 mx-3`}>
           <h1 className="flex space-x-2">
