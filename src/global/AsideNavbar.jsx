@@ -45,7 +45,7 @@ export default function AsideNavbar() {
     localStorage.setItem("theme", "dark");
     setTheme("dark");
   };
- 
+
 
   return (
     <Fragment>
@@ -130,15 +130,16 @@ export default function AsideNavbar() {
             </li>
           </ul>
           <ul className="space-y-2 my-5 mx-3 cursor-pointer">
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
-              <SwitchAccountOutlinedIcon className="dark:text-white" />
-              <span
-                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-              >
-                {" "}
-                Account
-              </span>
-            </li>
+            <Link to="/v3/seller/account">
+              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
+                <SwitchAccountOutlinedIcon className="dark:text-white" />
+                <span
+                  className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+                >
+                  Account
+                </span>
+              </li>
+            </Link>
             <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
               <SettingsOutlinedIcon className="dark:text-white" />
               <span
