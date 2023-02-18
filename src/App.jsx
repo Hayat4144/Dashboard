@@ -8,6 +8,10 @@ import ProductList from "./Components/Shop/ProductList";
 import Products from "./Components/Shop/Products";
 import OrderChart from "./global/OrderChart";
 import MainAccount from "./Components/Account/MainAccount";
+import PasswordChange from "./Components/Account/PasswordChange";
+import RequestForgetPassword from "./Components/Account/RequestForgetPassword";
+import Address from "./Components/Account/Address";
+import Profiles from "./Components/Account/Profiles";
 
 export default function App() {
   return (
@@ -18,6 +22,10 @@ export default function App() {
           <Route path="/v3/seller/add/product" element={<AddProducts />} />
           <Route path="/v3/seller/products" element={<Products />} />
           <Route path="/v3/seller/account" element={<MainAccount />} />
+          <Route path="/v3/seller/account/change/password" element={<PasswordChange />} />
+          <Route path="/v3/seller/account/request/password/reset" element={<RequestForgetPassword />}/>
+          <Route path="/v3/seller/account/address" element={<Address />}/>
+          <Route path="/v3/seller/account/profile" element={<Profiles />}/>
           <Route path="/3" element={<Signin />} />
           <Route path="/2" element={<Signup />} />
         </Routes>
