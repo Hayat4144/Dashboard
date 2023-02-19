@@ -4,6 +4,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import AsideNavbar from '../../global/AsideNavbar';
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { AiOutlineArrowRight } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 
 export default function ProductList() {
@@ -15,7 +17,32 @@ export default function ProductList() {
         { id: 3, name: "Product 3", price: 15.99, quantity: 42 },
         { id: 4, name: "Product 4", price: 25.99, quantity: 24 },
         { id: 5, name: "Product 5", price: 30.99, quantity: 34 },
+        { id: 6, name: "Product 6", price: 30.99, quantity: 34 },
+        { id: 7, name: "Product 7", price: 30.99, quantity: 34 },
+        { id: 8, name: "Product 8", price: 30.99, quantity: 34 },
+        { id: 9, name: "Product 9", price: 30.99, quantity: 34 },
+        { id: 10, name: "Product 10", price: 30.99, quantity: 34 },
     ])
+    const [showProductPerPage, setShowProductPerPage] = useState(5)
+    const [currentPage, setCurrentPage] = useState(1)
+
+    //  ------------------ pagination logic ----------------
+    if (products.length > showProductPerPage) {
+        var numberofPages = Math.ceil(products.length / showProductPerPage);
+        console.log(numberofPages);
+        var page_number = [...Array(numberofPages + 1).keys()].slice(1)
+    }
+
+    const nextPage = () => {
+        if (currentPage !== numberofPages) {
+            setCurrentPage(currentPage + 1)
+        }
+
+    }
+    const previousPage = () => {
+        if (currentPage !== 1)
+            setCurrentPage(currentPage - 1)
+    }
 
     const handleDelete = (id) => {
         setIsModalopen(!isModalopen);
@@ -75,6 +102,46 @@ export default function ProductList() {
                             </div>
                         </div>
                     </div>
+                    {
+                        products.length > showProductPerPage ? <div className='paginations my-16'>
+                            <section className='pagination_container my-5'>
+                                <div className='pagination_box flex items-center justify-center space-x-5'>
+                                    <div className='previous_btn'>
+                                        <button onClick={previousPage} disabled={currentPage === 1 ? true : false}
+                                            className='bg-indigo-700 text-white md:px-5 py-1.5 
+                                            rounded-md text-center px-3'>
+                                            <AiOutlineArrowLeft className='md:text-2xl' />
+                                        </button>
+                                    </div>
+                                    <div className='page_number_container  flex items-center space-x-3'>
+                                        {
+                                            page_number.map(pg_number => (
+                                                <button key={pg_number}
+                                                    onClick={() => {
+                                                        setCurrentPage(pg_number)
+                                                    }}
+                                                    className=
+                                                    {`${currentPage === pg_number ? 'border-none bg-indigo-700 text-white rounded-full outline-none' : ''}
+                                                rounded-full focus:border-non hover:border-none  w-10 h-10 
+                                                transition ease-out duration-500 hover:bg-indigo-700 hover:border border-gray-400 border
+                                                hover:text-white dark:text-gray-200 dark:focus:text-white`}
+                                                >{pg_number}</button>
+                                            ))
+                                        }
+
+
+                                    </div>
+                                    <div className='next_btn'>
+                                        <button onClick={nextPage}
+                                            className='bg-indigo-700 md:px-5 text-white py-1.5 
+                                    px-4 rounded-md text-center'>
+                                            <AiOutlineArrowRight className='md:text-2xl' />
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div > : ''
+                    }
                 </div>
 
             </main>
