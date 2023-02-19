@@ -91,15 +91,16 @@ export default function AsideNavbar() {
                 Analytics
               </span>
             </li>
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
-              <AddShoppingCartOutlinedIcon className="dark:text-white" />
-              <span
-                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-              >
-                {" "}
-                Orders
-              </span>
-            </li>
+            <Link to={'/v3/seller/orders'}>
+              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
+                <AddShoppingCartOutlinedIcon className="dark:text-white" />
+                <span
+                  className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+                >
+                  Orders
+                </span>
+              </li>
+            </Link>
             <Link to="/v3/seller/products">
               <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
                 <Inventory2OutlinedIcon className="dark:text-white" />
