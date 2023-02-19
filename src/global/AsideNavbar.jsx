@@ -119,15 +119,16 @@ export default function AsideNavbar() {
                 Sell
               </span>
             </li>
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
-              <PaymentsOutlinedIcon className="dark:text-white" />
-              <span
-                className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
-              >
-                {" "}
-                Transaction
-              </span>
-            </li>
+            <Link to="/v3/seller/transactions">
+              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 py-2 hover:rounded-md">
+                <PaymentsOutlinedIcon className="dark:text-white" />
+                <span
+                  className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}
+                >
+                  Transaction
+                </span>
+              </li>
+            </Link>
           </ul>
           <ul className="space-y-2 my-5 mx-3 cursor-pointer">
             <Link to="/v3/seller/account">
