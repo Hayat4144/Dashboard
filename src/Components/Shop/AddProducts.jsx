@@ -51,7 +51,7 @@ export default function AddProducts() {
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                 />
                             </div>
-                            <div className='price'>
+                            <div className='stock'>
                                 <label htmlFor="stock" className='dark:text-gray-200 text-gray-700'>Stock</label>
                                 <input
                                     type={'number'}
