@@ -79,7 +79,7 @@ export default function ProductList() {
                                             <td className="px-4 py-2">{product.quantity}</td>
                                             <td className="px-4 py-2">{product.quantity < 1 ? <CancelOutlinedIcon className='text-red-600' /> : <CheckCircleOutlineOutlinedIcon className='text-green-700 dark:text-green-600' />}</td>
                                             <td className="px-4 py-2">{product.price}</td>
-                                            <td className="px-4 py-2"><EditOutlinedIcon /></td>
+                                            <td className="px-4 py-2"><Link to={`/v3/seller/edit/product/${product.id}`}><EditOutlinedIcon /></Link></td>
                                             <td className="px-4 py-2" onClick={() => handleDelete(product.id)}><DeleteOutlineOutlinedIcon /></td>
                                         </tr>
                                     ))

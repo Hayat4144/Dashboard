@@ -14,6 +14,7 @@ import Address from "./Components/Account/Address";
 import Profiles from "./Components/Account/Profiles";
 import Transactions from "./Components/Shop/Transactions";
 import Orders from "./Components/Shop/Orders";
+import EditProduct from "./Components/Shop/EditProduct";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/v3/seller/account/profile" element={<Profiles />}/>
           <Route path="/v3/seller/transactions" element={<Transactions />}/>
           <Route path="/v3/seller/orders" element={<Orders />}/>
+          <Route path="/v3/seller/edit/product/:id" element={<EditProduct />}/>
           <Route path="/3" element={<Signin />} />
           <Route path="/2" element={<Signup />} />
         </Routes>
