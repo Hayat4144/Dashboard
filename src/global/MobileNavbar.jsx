@@ -7,22 +7,22 @@ import SwitchAccountOutlinedIcon from "@mui/icons-material/SwitchAccountOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { BsArrowLeftShort } from "react-icons/bs";
-import { BsArrowRightShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { FaUserCircle } from 'react-icons/fa'
+import LogoutIcon from '@mui/icons-material/Logout';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { toastifyoption } from './Notification';
 
 export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
   const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
+  const dispatch = useDispatch();
 
-  
   // theme switcher function
   const ThemeSwithcherFunc = () => {
     if (document.documentElement.classList.contains("dark")) {
@@ -41,11 +41,24 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
     setIsMobileViewOpen(!isMobileViewOpen)
   }
 
+  const LogoutFunc = async () => {
+    const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/seller/auth/logout`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    })
+    const { data, error } = await response.json();
+    if (response.status !== 200) return toast.error(error, toastifyoption);
+    dispatch({ type: SIGNIN })
+    toast.success(data, toastifyoption)
+  }
 
 
   return (
     <Fragment>
-      <nav className="md:hidden flex justify-between w-full h-20 border-b border-gray-300 dark:border-none
+      <nav className="md:hidden flex justify-between w-full z-50 h-20 border-b border-gray-300 dark:border-none
       items-center bg-white dark:bg-gray-800 shadow-md px-5 dark:text-gray-200 text-gray-900">
         <div className='mobile_view flex items-center'>
           <div className='burger_menu cursor-pointer' onClick={OpenMobileeView}>
@@ -60,7 +73,7 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
         </div>
       </nav>
       <aside
-        className={`fixed top-0  md:hidden bg-black w-full opacity-100
+        className={`fixed top-0 h-full md:hidden z-50 bg-black w-full opacity-100
         bg-opacity-30 inset ${isMobileViewOpen ? 'flex' : 'hidden'}`}>
         <div className='w-3/4 h-screen  bg-white text-gray-900 dark:text-gray-200 dark:bg-gray-800'>
           <div className='user_header text-white h-20 px-5 space-x-5 flex 
@@ -81,78 +94,51 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
                 <Link to="/">
                   <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
                     <DashboardCustomizeOutlinedIcon className="dark:text-white" />
-                    <span
-                      className={`dark:text-gray-200`}
-                    >
+                    <span className={`dark:text-gray-200`} >
                       Dashboard
                     </span>
                   </li>
                 </Link>
                 <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
                   <AnalyticsOutlinedIcon className="dark:text-white" />
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    {" "}
-                    Analytics
-                  </span>
+                  <span className={`dark:text-gray-200`} >Analytics</span>
                 </li>
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
-                  <AddShoppingCartOutlinedIcon className="dark:text-white" />
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    {" "}
-                    Orders
-                  </span>
-                </li>
-                <Link to="/v3/seller/products">
+                <Link to="/v3/seller/orders">
                   <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
+                    <AddShoppingCartOutlinedIcon className="dark:text-white" />
+                    <span className={`dark:text-gray-200`}>Orders</span>
+                  </li>
+                </Link>
+                <Link to="/v3/seller/products">
+                  <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md">
                     <Inventory2OutlinedIcon className="dark:text-white" />
-                    <span
-                      className={`dark:text-gray-200`}
-                    >Products
+                    <span className={`dark:text-gray-200`} >Products
                     </span>
                   </li>
                 </Link>
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
+                <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md">
                   <SellOutlinedIcon className="dark:text-white" />{" "}
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    {" "}
-                    Sell
-                  </span>
+                  <span className={`dark:text-gray-200`} >Sell</span>
                 </li>
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
-                  <PaymentsOutlinedIcon className="dark:text-white" />
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    {" "}
-                    Transaction
-                  </span>
-                </li>
+                <Link to="/v3/seller/transactions">
+                  <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md">
+                    <PaymentsOutlinedIcon className="dark:text-white" />
+                    <span className={`dark:text-gray-200`} >Transaction</span>
+                  </li>
+                </Link>
               </ul>
               <ul className="space-y-2 my-5 mx-3 cursor-pointer">
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
-                  <SwitchAccountOutlinedIcon className="dark:text-white" />
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    {" "}
-                    Account
-                  </span>
-                </li>
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md">
+                <Link to="/v3/seller/account">
+                  <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md">
+                    <SwitchAccountOutlinedIcon className="dark:text-white" />
+                    <span className={`dark:text-gray-200`} > Account</span>
+                  </li>
+                </Link>
+                <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md">
                   <SettingsOutlinedIcon className="dark:text-white" />
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    Settings
-                  </span>
+                  <span className={`dark:text-gray-200`} >Settings</span>
                 </li>
-                <li className="space-x-3 hover:text-white px-2 py-2 hover:rounded-md" onClick={ThemeSwithcherFunc}>
+                <li className="space-x-3 md:hover:text-white px-2 py-2 hover:rounded-md" onClick={ThemeSwithcherFunc}>
                   <button>
                     {theme === "dark" ? (
                       <LightModeIcon className="dark:text-white" />
@@ -160,13 +146,21 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
                       <DarkModeOutlinedIcon className="dark:text-white" />
                     )}
                   </button>
-                  <span
-                    className={`dark:text-gray-200`}
-                  >
-                    Toogle dark mode
-                  </span>
+                  <span className={`dark:text-gray-200`}>Toogle dark mode</span>
                 </li>
               </ul>
+              <div className={`logout_section absolute bottom-2 mx-3 `}>
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    LogoutFunc();
+                  }}
+                  className="flex space-x-3 hover:bg-indigo-600 cursor-pointer
+           hover:text-white px-2  py-2 my-1 hover:rounded-md">
+                  <LogoutIcon className="dark:text-white" />
+                  <span className={`dark:text-gray-200`}>Log out</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
