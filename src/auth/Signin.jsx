@@ -1,5 +1,9 @@
 import React, { Fragment, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { toastifyoption } from '../global/Notification';
+import Decodejwt from '../global/Decodejwt';
 
 export default function Signin() {
   const [email, setemail] = useState('')
@@ -8,7 +12,6 @@ export default function Signin() {
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
   const EmailChange = (e) => {
     setemail(e.target.value)
   }
@@ -16,9 +19,9 @@ export default function Signin() {
     setpassword(e.target.value)
   }
 
-  const SigninFunc = async () => {
+  async function SubmitHandler() {
     setIsLoading(!isLoading)
-    await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
+    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -28,26 +31,11 @@ export default function Signin() {
         email,
         password
       })
-    }).then(async res => {
-      const { data, error, token } = await res.json();
-      setIsLoading(false)
-      if (res.status !== 200) {
-        toast.error(error, {
-          position: 'bottom-center',
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        })
-        return;
-      }
-      DecodeJwtToken(dispatch, navigate, token, data, searchParams, error);
-
-
-    }).catch(err => console.log(err))
+    });
+    const { data, error, token } = await result.json();
+    setIsLoading(false)
+    if (res.status !== 200) return toast.error(error, toastifyoption);
+    Decodejwt(data);
   }
 
   return (
@@ -61,7 +49,7 @@ export default function Signin() {
         </div>
         <form onSubmit={(e) => {
           e.preventDefault();
-          SigninFunc();
+          SubmitHandler();
         }}>
           <div
             className='sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%]  lg:mx-auto 

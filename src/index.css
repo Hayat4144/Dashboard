@@ -24,3 +24,26 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* dont-account-text  signin */
+
+.dont_have_account::before {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 1px;
+  left: 0;
+  right: 5%;
+  top: 50%;
+  position: absolute;
+}
+.dont_have_account::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 1px;
+  margin-left: 5px;
+  right: 0;
+  top: 50%;
+  position: absolute;
+}
