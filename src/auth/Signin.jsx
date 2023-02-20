@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastifyoption } from '../global/Notification';
 import Decodejwt from '../global/Decodejwt';
@@ -12,6 +12,17 @@ export default function Signin() {
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { IsLogdin } = useSelector(state => state.Signin)
+
+  // if user logdin redirect to home page
+  useEffect(() => {
+    if (IsLogdin) {
+      toast.success('You are already log in.', toastifyoption)
+      return navigate('/');
+    }
+
+  }, [])
+
   const EmailChange = (e) => {
     setemail(e.target.value)
   }
@@ -115,7 +126,7 @@ export default function Signin() {
         </form>
 
         <div className='create_new_account sm:mx-auto  sm:w-[50%] mt-4 xl:mx-auto  
-                lg:mx-auto lg:w-[40%] md:w-[50%] xl:w-[30%]'>
+            lg:mx-auto lg:w-[40%] md:w-[50%] xl:w-[30%]'>
           <h3 className='dont_have_account  mx-4 before:bg-gray-400 before:lg:w-[100px]
           after:lg:w-[100px] after:bg-gray-400 my-10 text-center relative 
           ax-w-[600px] before:md:w-[80px] after:md:w-[80px] before:sm:w-[75px] after:sm:w-[75px]'>Don't have any account ?</h3>
