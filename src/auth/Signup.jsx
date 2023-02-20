@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
-import { IoIosCloseCircleOutline } from 'react-icons/io'
-import { json, Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { toastifyoption } from '../global/Notification'
 
 export default function Signup() {
   const [firstName, setFirstName] = useState('')
@@ -15,9 +16,9 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-  const SignupFunc = async () => {
+  async function SignupFunc() {
     setisLoading(!isLoading)
-    await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signup/`, {
+    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signup/`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -30,36 +31,11 @@ export default function Signup() {
         confirmpassword,
       })
     })
-      .then(async (res) => {
-        setisLoading(false)
-        const data = await res.json();
-        console.log(data.data)
-        if (res.status === 200) {
-          toast.success(data.data, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          navigate('/V2/auth/sign_in')
-        }
-        else {
-          toast.error(data.error, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          })
-        }
-      })
+    const { data, error } = await result.json();
+    setisLoading(false)
+    if (result.status !== 200) return toast.error(error, toastifyoption);
+    toast.success(data, toastifyoption);
+    navigate('/v3/seller/signin')
   }
   return (
     <Fragment>
@@ -77,7 +53,6 @@ export default function Signup() {
             e.preventDefault();
             SignupFunc();
           }}>
-            {/* first Name field */}
             <div className='mx-5 lg:mx-4 mt-2'>
               <label htmlFor='Name' className='text-sm  text-gray-700'>
                 First Name</label>
@@ -87,29 +62,32 @@ export default function Signup() {
                 value={firstName}
                 onChange={(e) => { setFirstName(e.target.value) }}
                 className="border border-gray-300 rounded-md my-2 py-[8px] 
-                                w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
-                                focus:border  px-2 outline-none text-sm text-gray-700
-                                placeholder:text-gray-500" placeholder='Enter your full name' />
-
+                w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
+                focus:border  px-2 outline-none text-sm text-gray-700
+                placeholder:text-gray-500" placeholder='Enter your full name'
+              />
             </div>
-            {/* last Name field */}
             <div className='mx-5 lg:mx-4 mt-2'>
               <label htmlFor='Name' className='text-sm  text-gray-700'>
                 Last Name</label>
-              <input type={'text'} required value={lastName}
+              <input
+                type={'text'}
+                required
+                value={lastName}
                 onChange={(e) => { setLastName(e.target.value) }}
                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                 focus:border  px-2 outline-none text-sm text-gray-700
-                placeholder:text-gray-500" placeholder='Enter your full name' />
-
+                placeholder:text-gray-500"
+                placeholder='Enter your full name'
+              />
             </div>
 
-            {/* email field */}
             <div className='mx-5 lg:mx-4'>
               <label htmlFor='email' className='text-sm  text-gray-700'>
                 Email</label>
-              <input type={'email'} required value={email}
+              <input
+                type={'email'} required value={email}
                 onChange={(e) => { setemail(e.target.value) }}
                 className="border border-gray-300 rounded-md my-2 py-[8px] w-full focus:border-indigo-600
               focus:ring-indigo-700 bg-inherit focus:border  px-2 outline-none text-sm
