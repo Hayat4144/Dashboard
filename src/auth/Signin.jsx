@@ -128,8 +128,10 @@ export default function Signin() {
         <div className='create_new_account sm:mx-auto  sm:w-[50%] mt-4 xl:mx-auto  
             lg:mx-auto lg:w-[40%] md:w-[50%] xl:w-[30%]'>
           <h3 className='dont_have_account  mx-4 before:bg-gray-400 before:lg:w-[100px]
-          after:lg:w-[100px] after:bg-gray-400 my-10 text-center relative 
-          ax-w-[600px] before:md:w-[80px] after:md:w-[80px] before:sm:w-[75px] after:sm:w-[75px]'>Don't have any account ?</h3>
+            after:lg:w-[100px] after:bg-gray-400 my-10 text-center relative 
+            ax-w-[600px] before:md:w-[80px] after:md:w-[80px] before:sm:w-[75px] after:sm:w-[75px]'>
+            Don't have any account ?
+          </h3>
           <div className='new_accoutn_btn mx-4 my-10'>
             <button className='w-full bg-indigo-800 py-2 px-6 rounded-md mb-2
           text-white hover:bg-indigo-900'>
