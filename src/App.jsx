@@ -12,6 +12,8 @@ import PasswordChange from "./Components/Account/PasswordChange";
 import RequestForgetPassword from "./Components/Account/RequestForgetPassword";
 import Address from "./Components/Account/Address";
 import Profiles from "./Components/Account/Profiles";
+import Transactions from "./Components/Shop/Transactions";
+import Orders from "./Components/Shop/Orders";
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
           <Route path="/v3/seller/account/request/password/reset" element={<RequestForgetPassword />}/>
           <Route path="/v3/seller/account/address" element={<Address />}/>
           <Route path="/v3/seller/account/profile" element={<Profiles />}/>
+          <Route path="/v3/seller/transactions" element={<Transactions />}/>
+          <Route path="/v3/seller/orders" element={<Orders />}/>
           <Route path="/3" element={<Signin />} />
           <Route path="/2" element={<Signup />} />
         </Routes>
