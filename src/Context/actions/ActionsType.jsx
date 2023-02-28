@@ -1,2 +1,4 @@
 export const SIGNIN = 'SIGNIN'
 export const LOGOUT = 'LOGOUT'
+export const USERDETAILS = 'USERDETAILS'
+export const REMOVEUSERDETAILS = 'REMOVEUSERDETAILS' 
