@@ -15,23 +15,30 @@ import Profiles from "./Components/Account/Profiles";
 import Transactions from "./Components/Shop/Transactions";
 import Orders from "./Components/Shop/Orders";
 import EditProduct from "./Components/Shop/EditProduct";
+import 'react-loading-skeleton/dist/skeleton.css'
+import MobileSkeleton from "./animation/MobileSkeleton";
+import AsideNavbarSkeleton from "./animation/AsideNavbarSkeleton";
+import CardSkeleton from "./animation/CardSkeleton";
+import WelcomeMessage from "./global/WelcomeMessage";
+import WelcomeMessageSkeleton from "./animation/WelcomeMessageSkeleton";
+import OrderChartSkeleton from "./animation/OrderChartSkeleton";
 
 export default function App() {
   return (
     <Fragment>
       <Router>
         <Routes>
-          <Route path="/" element={<Dashboard />}/>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/v3/seller/add/product" element={<AddProducts />} />
           <Route path="/v3/seller/products" element={<Products />} />
           <Route path="/v3/seller/account" element={<MainAccount />} />
           <Route path="/v3/seller/account/change/password" element={<PasswordChange />} />
-          <Route path="/v3/seller/account/request/password/reset" element={<RequestForgetPassword />}/>
-          <Route path="/v3/seller/account/address" element={<Address />}/>
-          <Route path="/v3/seller/account/profile" element={<Profiles />}/>
-          <Route path="/v3/seller/transactions" element={<Transactions />}/>
-          <Route path="/v3/seller/orders" element={<Orders />}/>
-          <Route path="/v3/seller/edit/product/:id" element={<EditProduct />}/>
+          <Route path="/v3/seller/account/request/password/reset" element={<RequestForgetPassword />} />
+          <Route path="/v3/seller/account/address" element={<Address />} />
+          <Route path="/v3/seller/account/profile" element={<Profiles />} />
+          <Route path="/v3/seller/transactions" element={<Transactions />} />
+          <Route path="/v3/seller/orders" element={<Orders />} />
+          <Route path="/v3/seller/edit/product/:id" element={<EditProduct />} />
           <Route path="/v3/seller/signin" element={<Signin />} />
           <Route path="/3/seller/signup" element={<Signup />} />
         </Routes>
