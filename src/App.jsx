@@ -32,8 +32,8 @@ export default function App() {
           <Route path="/v3/seller/transactions" element={<Transactions />}/>
           <Route path="/v3/seller/orders" element={<Orders />}/>
           <Route path="/v3/seller/edit/product/:id" element={<EditProduct />}/>
-          <Route path="/3" element={<Signin />} />
-          <Route path="/2" element={<Signup />} />
+          <Route path="/v3/seller/signin" element={<Signin />} />
+          <Route path="/3/seller/signup" element={<Signup />} />
         </Routes>
       </Router>
     </Fragment>
