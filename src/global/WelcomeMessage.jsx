@@ -18,7 +18,7 @@ export default function WelcomeMessage() {
 
     return (
         <Fragment>
-            <section className='mx-5 my-5 md:mx-10 dark:text-gray-100'>
+            <section className='md:mx-5 mx-2 my-5 lg:mx-10 dark:text-gray-100'>
                 <div className='welcome_message flex space-x-2 text-2xl'>
                     <h1 className='welcome_text'>{greeting},</h1>
                     <span className='user_name cursor-pointer'>Hayat ilyas</span>

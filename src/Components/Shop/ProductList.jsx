@@ -57,7 +57,7 @@ export default function ProductList() {
         <Fragment>
             <main className='flex'>
                 <div className='w-full h-full dark:bg-gray-900'>
-                    <section className='transaction_data rounded-md shadow-2xl my-10 mx-5 md:mx-10 overflow-x-auto dark:bg-gray-800'>
+                    <section className='transaction_data rounded-md shadow-2xl my-10 mx-2 md:mx-5 lg:mx-10 overflow-x-auto dark:bg-gray-800'>
                         <table className='table-auto w-full'>
                             <thead>
                                 <tr className="bg-indigo-700 text-white text-justify">

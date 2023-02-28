@@ -34,8 +34,9 @@ export default function Dashboard() {
                 <main className='dark:bg-gray-900 h-full w-full'>
                     <WelcomeMessage />
                     <Cards />
+                    <OrderChart />
                     <div className='transaction_contianer rounded-md shadow-md border
-                    border-gray-300 dark:border-none mx-5 md:mx-10 my-5 dark:bg-gray-800'>
+                    border-gray-300 dark:border-none mx-2 md:mx-5 lg:mx-10 my-5 dark:bg-gray-800'>
                         <div className='transaction_container_header py-2 sm:flex sm:justify-between sm:items-center sm:mx-2'>
                             <h1 className='dark:text-gray-200 text-xl hidden sm:block'>Transaction data </h1>
                             <div className='date_container flex items-center mx-1 justify-between'>
