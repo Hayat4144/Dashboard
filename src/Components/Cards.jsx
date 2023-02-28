@@ -4,7 +4,7 @@ export default function Cards() {
     return (
         <Fragment>
             <div className='card_container grid grid-cols-1 md:grid-cols-2
-         lg:grid-cols-3 gap-5 my-5 mx-5 md:mx-10'>
+         lg:grid-cols-3 gap-5 my-5 mx-2 md:mx-5 lg:mx-10'>
                 {
                     [1, 2, 3].map((cards, index) => (
                         <div key={index} className='cards border  dark:bg-gray-800 dark:border-none  shadow-md h-28 px-5 py-2  
