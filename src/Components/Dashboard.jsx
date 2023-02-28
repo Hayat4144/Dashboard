@@ -1,11 +1,15 @@
 import React, { Fragment, useState, lazy, Suspense } from 'react'
-import AsideNavbar from '../global/AsideNavbar'
-import Cards from './Cards'
 import TransactionSample from './TransactionSample'
-import WelcomeMessage from '../global/WelcomeMessage'
 import ProductList from './Shop/ProductList'
 import OrderChart from '../global/OrderChart'
+import CardSkeleton from '../animation/CardSkeleton'
+import MobileSkeleton from '../animation/MobileSkeleton'
+import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
+import WelcomeMessageSkeleton from '../animation/WelcomeMessageSkeleton'
 const MobileNavbar = lazy(() => import('../global/MobileNavbar'))
+const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
+const WelcomeMessage = lazy(()=>import('../global/WelcomeMessage'))
+const Cards = lazy(() => import('./Cards'))
 
 export default function Dashboard() {
     const [transactionData, setTransactionData] = useState([
@@ -25,15 +29,21 @@ export default function Dashboard() {
     return (
         <Fragment>
             <div className='md:hidden'>
-                <Suspense fallback={'loading...'}>
+                <Suspense fallback={<MobileSkeleton />}>
                     <MobileNavbar />
                 </Suspense>
             </div>
             <div className='flex'>
-                <AsideNavbar />
+                <Suspense fallback={<AsideNavbarSkeleton />}>
+                    <AsideNavbar />
+                </Suspense>
                 <main className='dark:bg-gray-900 h-full w-full'>
-                    <WelcomeMessage />
-                    <Cards />
+                    <Suspense fallback={<WelcomeMessageSkeleton />}>
+                        <WelcomeMessage />
+                    </Suspense>
+                    <Suspense fallback={<CardSkeleton />}>
+                        <Cards />
+                    </Suspense>
                     <OrderChart />
                     <div className='transaction_contianer rounded-md shadow-md border
                     border-gray-300 dark:border-none mx-2 md:mx-5 lg:mx-10 my-5 dark:bg-gray-800'>
