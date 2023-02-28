@@ -12,21 +12,21 @@ import { useSearchParams } from "react-router-dom";
 
 const Decodejwt = (message) => {
     const dispatch = useDispatch();
-const navigate = useNavigate();
-const searchParams = useSearchParams(); 
+    const navigate = useNavigate();
+    const searchParams = useSearchParams();
     const jwt_token = Cookies.get('jwt_token');
-    if (jwt_token) return toast.error('Token is invalid', toastifyoption) ;
-    const decode_token = jwtDecode(jwt_token) ;
-    if(decode_token){
-        dispatch({type:SIGNIN})
-        toast.success(message,toastifyoption)
+    if (jwt_token) return toast.error('Token is invalid', toastifyoption);
+    const decode_token = jwtDecode(jwt_token);
+    if (decode_token) {
+        dispatch({ type: SIGNIN })
+        toast.success(message, toastifyoption)
         searchParams.get("next")
-        ? navigate(searchParams.get("next"))
-        : navigate("/");
+            ? navigate(searchParams.get("next"))
+            : navigate("/");
         return;
     }
-    toast.error(message,toastifyoption)
+    toast.error(message, toastifyoption)
 
 }
 
-export default Decodejwt ;
+export default Decodejwt;
