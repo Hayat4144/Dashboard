@@ -54,15 +54,18 @@ export default function AsideNavbar() {
 
   // theme switcher function
   const ThemeSwithcherFunc = () => {
+
     if (document.documentElement.classList.contains("dark")) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
       setTheme("light");
+      window.location.reload();
       return;
     }
     document.documentElement.classList.add("dark");
     localStorage.setItem("theme", "dark");
     setTheme("dark");
+    window.location.reload();
   };
 
 

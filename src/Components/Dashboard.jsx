@@ -1,15 +1,16 @@
 import React, { Fragment, useState, lazy, Suspense } from 'react'
 import TransactionSample from './TransactionSample'
 import ProductList from './Shop/ProductList'
-import OrderChart from '../global/OrderChart'
 import CardSkeleton from '../animation/CardSkeleton'
 import MobileSkeleton from '../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
 import WelcomeMessageSkeleton from '../animation/WelcomeMessageSkeleton'
+import OrderChartSkeleton from '../animation/OrderChartSkeleton'
 const MobileNavbar = lazy(() => import('../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
-const WelcomeMessage = lazy(()=>import('../global/WelcomeMessage'))
+const WelcomeMessage = lazy(() => import('../global/WelcomeMessage'))
 const Cards = lazy(() => import('./Cards'))
+const OrderChart = lazy(()=>import('../global/OrderChart'))
 
 export default function Dashboard() {
     const [transactionData, setTransactionData] = useState([
@@ -44,7 +45,9 @@ export default function Dashboard() {
                     <Suspense fallback={<CardSkeleton />}>
                         <Cards />
                     </Suspense>
-                    <OrderChart />
+                    <Suspense fallback={<OrderChartSkeleton />}>
+                        <OrderChart />
+                    </Suspense>
                     <div className='transaction_contianer rounded-md shadow-md border
                     border-gray-300 dark:border-none mx-2 md:mx-5 lg:mx-10 my-5 dark:bg-gray-800'>
                         <div className='transaction_container_header py-2 sm:flex sm:justify-between sm:items-center sm:mx-2'>
