@@ -1,5 +1,4 @@
 import React, { Fragment, Suspense, lazy } from 'react'
-import AsideNavbar from '../../global/AsideNavbar'
 import AccoutnImage from '../../assets/images/account.png'
 import SecurityImage from '../../assets/images/security.png'
 import OrderImage from '../../assets/images/Order.webp'
@@ -7,18 +6,23 @@ import WishlistImage from '../../assets/images/Wishlist.png'
 import PasswordImage from '../../assets/images/passwordProtect.webp'
 import EmailImage from '../../assets/images/mail.webp'
 import PasswordChange from './PasswordChange'
+import MobileSkeleton from '../../animation/MobileSkeleton'
+import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
+const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 
 export default function MainAccount() {
     return (
         <Fragment>
             <div className='md:hidden'>
-                <Suspense fallback={'loading...'}>
+                <Suspense fallback={<MobileSkeleton />}>
                     <MobileNavbar />
                 </Suspense>
             </div>
             <div className='flex'>
-                <AsideNavbar />
+                <Suspense fallback={<AsideNavbarSkeleton />}>
+                    <AsideNavbar />
+                </Suspense>
                 <div className='dark:bg-gray-900 w-full'>
                     <section className='grid grid-cols-1 my-5 mx-5 md:mx-10
                         md:grid-cols-2 lg:grid-cols-3 gap-5 '>

@@ -1,6 +1,4 @@
 import React, { Fragment, useState, lazy, Suspense } from 'react'
-import TransactionSample from './TransactionSample'
-import ProductList from './Shop/ProductList'
 import CardSkeleton from '../animation/CardSkeleton'
 import MobileSkeleton from '../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
@@ -12,6 +10,8 @@ const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
 const WelcomeMessage = lazy(() => import('../global/WelcomeMessage'))
 const Cards = lazy(() => import('./Cards'))
 const OrderChart = lazy(() => import('../global/OrderChart'))
+const ProductList = lazy(() => import('./Shop/ProductList'))
+const TransactionSample = lazy(() => import('./TransactionSample'))
 
 export default function Dashboard() {
     const [transactionData, setTransactionData] = useState([
@@ -80,7 +80,7 @@ export default function Dashboard() {
                             <TransactionSample transactionData={transactionData} />
                         </Suspense>
                     </div>
-                    <Suspense fallback={'loading...'}>
+                    <Suspense fallback={<TableSkeleton />}>
                         <ProductList />
                     </Suspense>
 
