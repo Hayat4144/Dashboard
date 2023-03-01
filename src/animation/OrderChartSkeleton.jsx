@@ -10,7 +10,7 @@ export default function OrderChartSkeleton() {
             <div className='dark:bg-gray-800 shadow-md  my-10 
             mx-2 md:mx-5 lg:mx-10 rounded-md'>
                 <div className='relative h-[50vh]'>
-                    <Skeleton />
+                    <Skeleton baseColor={Color} highlightColor={theme=== 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''}/>
                     <Skeleton className='w-full h-full' baseColor={Color} highlightColor={theme=== 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''}/>
                 </div>
             </div>
