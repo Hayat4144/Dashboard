@@ -5,6 +5,7 @@ import OrdersSample from './OrdersSample';
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import TableSkeleton from '../../animation/TableSkeleton';
+import OrderSkeleton from '../../animation/OrderSkeleton';
 
 export default function Orders() {
     const [orderData, setOrderData] = useState([
