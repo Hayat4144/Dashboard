@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton'
 import AsideNavbarSkeleton from './AsideNavbarSkeleton'
 import MobileSkeleton from './MobileSkeleton'
 
-export default function AddressSkeleton() {
+export default function PasswordChangeSkeleton() {
     const [theme, setTheme] = useState(localStorage.getItem("theme"));
     const [Color, setColor] = useState(theme === 'dark' ? 'rgb(31 41 55)' : '#ebebeb')
     return (
@@ -18,7 +18,7 @@ export default function AddressSkeleton() {
                     <section className='dark:bg-gray-800 my-5 mx-3 rounded-md shadow-md border border-gray-300 dark:border-none '>
                         <div className='grid grid-cols-1 md:grid-cols-2 py-5 px-2 gap-5 text-gray-700 dark:text-gray-200'>
                             <div className='Street_field'>
-                                <Skeleton baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
+                                <Skeleton  baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''}  />
                                 <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
                             </div>
                             <div className='Area_field'>
@@ -26,18 +26,6 @@ export default function AddressSkeleton() {
                                 <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
                             </div>
                             <div className='City_field'>
-                                <Skeleton baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                                <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                            </div>
-                            <div className='Pincode_field'>
-                                <Skeleton baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                                <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                            </div>
-                            <div className='State_field'>
-                                <Skeleton baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                                <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
-                            </div>
-                            <div className='Country_field'>
                                 <Skeleton baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
                                 <Skeleton className='h-8' baseColor={Color} highlightColor={theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : ''} />
                             </div>
@@ -50,6 +38,5 @@ export default function AddressSkeleton() {
                 </div>
             </main>
         </Fragment>
-
     )
 }
