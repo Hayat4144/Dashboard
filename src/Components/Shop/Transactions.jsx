@@ -4,6 +4,9 @@ const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 const TransactionSample = lazy(() => import("../TransactionSample"))
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
+import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton'
+import MobileSkeleton from '../../animation/MobileSkeleton'
+import TableSkeleton from '../../animation/TableSkeleton'
 
 
 export default function Transactions() {
@@ -52,12 +55,12 @@ export default function Transactions() {
     return (
         <Fragment>
             <header className='md:hidden'>
-                <Suspense fallback={'loading...'}>
+                <Suspense fallback={<MobileSkeleton />}>
                     <MobileNavbar />
                 </Suspense>
             </header>
             <main className='flex'>
-                <Suspense fallback={<p>loading..</p>}>
+                <Suspense fallback={<AsideNavbarSkeleton />}>
                     <AsideNavbar />
                 </Suspense>
                 <section className='w-full h-full dark:bg-gray-900'>
@@ -91,7 +94,7 @@ export default function Transactions() {
                                 </h2>
                             </div>
                         </div>
-                        <Suspense fallback={<p>loading..</p>}>
+                        <Suspense fallback={<TableSkeleton />}>
                             <TransactionSample transactionData={transactionData} />
                         </Suspense>
                     </div>

@@ -6,11 +6,12 @@ import MobileSkeleton from '../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
 import WelcomeMessageSkeleton from '../animation/WelcomeMessageSkeleton'
 import OrderChartSkeleton from '../animation/OrderChartSkeleton'
+import TableSkeleton from '../animation/TableSkeleton'
 const MobileNavbar = lazy(() => import('../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
 const WelcomeMessage = lazy(() => import('../global/WelcomeMessage'))
 const Cards = lazy(() => import('./Cards'))
-const OrderChart = lazy(()=>import('../global/OrderChart'))
+const OrderChart = lazy(() => import('../global/OrderChart'))
 
 export default function Dashboard() {
     const [transactionData, setTransactionData] = useState([
@@ -75,11 +76,14 @@ export default function Dashboard() {
                                 </h2>
                             </div>
                         </div>
-                        <Suspense fallback={<p>loading..</p>}>
+                        <Suspense fallback={<TableSkeleton />}>
                             <TransactionSample transactionData={transactionData} />
                         </Suspense>
                     </div>
-                    <ProductList />
+                    <Suspense fallback={'loading...'}>
+                        <ProductList />
+                    </Suspense>
+
                 </main>
             </div>
         </Fragment>

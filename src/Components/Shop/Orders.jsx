@@ -4,6 +4,7 @@ const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 import OrdersSample from './OrdersSample';
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
+import TableSkeleton from '../../animation/TableSkeleton';
 
 export default function Orders() {
     const [orderData, setOrderData] = useState([
@@ -87,7 +88,7 @@ export default function Orders() {
                                 </h2>
                             </div>
                         </div>
-                        <Suspense fallback={<p>loadin...</p>}>
+                        <Suspense fallback={<TableSkeleton />}>
                             <OrdersSample OrderData={orderData} />
                         </Suspense>
                     </div>
@@ -117,8 +118,6 @@ export default function Orders() {
                                                 >{pg_number}</button>
                                             ))
                                         }
-
-
                                     </div>
                                     <div className='next_btn'>
                                         <button onClick={nextPage}
