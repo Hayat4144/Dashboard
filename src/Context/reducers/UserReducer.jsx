@@ -1,12 +1,12 @@
 import { REMOVEUSERDETAILS, USERDETAILS } from "../actions/ActionsType";
 
 const initailState = {
-    data: null
+    data: []
 }
 
 
 const UserReducer = (state = initailState, action) => {
-    switch (action) {
+    switch (action.type) {
         case USERDETAILS:
             return { ...state, data: action.payload }
         case REMOVEUSERDETAILS:

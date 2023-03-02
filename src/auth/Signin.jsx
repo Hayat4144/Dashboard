@@ -19,7 +19,7 @@ export default function Signin() {
   useEffect(() => {
     if (IsLogdin) {
       toast.info('You are already log in.', toastifyoption)
-      return navigate('/');
+      // return navigate('/');
     }
 
   }, [])
