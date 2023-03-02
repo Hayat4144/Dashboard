@@ -15,13 +15,16 @@ import { FaUserCircle } from 'react-icons/fa'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import { toastifyoption } from './Notification';
+import { LOGOUT, REMOVEUSERDETAILS } from "../Context/actions/ActionsType";
 
 export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
   const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // theme switcher function
   const ThemeSwithcherFunc = () => {
@@ -43,7 +46,7 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
 
   const LogoutFunc = async () => {
     const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/seller/auth/logout`, {
-      method: "GET",
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
@@ -51,8 +54,10 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
     })
     const { data, error } = await response.json();
     if (response.status !== 200) return toast.error(error, toastifyoption);
-    dispatch({ type: SIGNIN })
+    dispatch({ type: LOGOUT })
+    dispatch({ type: REMOVEUSERDETAILS })
     toast.success(data, toastifyoption)
+    navigate('/v3/seller/signin')
   }
 
 

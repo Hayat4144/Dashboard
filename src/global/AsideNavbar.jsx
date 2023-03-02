@@ -5,7 +5,6 @@ import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomi
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import SwitchAccountOutlinedIcon from "@mui/icons-material/SwitchAccountOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -16,8 +15,9 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastifyoption } from "./Notification";
 import { useDispatch } from "react-redux";
-import { SIGNIN } from "../Context/actions/ActionsType";
+import { LOGOUT, REMOVEUSERDETAILS } from "../Context/actions/ActionsType";
 const MobileNavbar = lazy(() => import('./MobileNavbar'))
+import { useNavigate } from "react-router-dom";
 
 
 export default function AsideNavbar() {
@@ -25,6 +25,7 @@ export default function AsideNavbar() {
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [isCollapsed, setIsCollapsed] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // ----------------- stop scrolling if the modal is open ------------------- //
   if (isMobileViewOpen) {
@@ -39,8 +40,8 @@ export default function AsideNavbar() {
   }
 
   const LogoutFunc = async () => {
-    const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/seller/auth/logout`, {
-      method: "GET",
+    const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/logout`, {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
@@ -48,8 +49,10 @@ export default function AsideNavbar() {
     })
     const { data, error } = await response.json();
     if (response.status !== 200) return toast.error(error, toastifyoption);
-    dispatch({ type: SIGNIN })
+    dispatch({ type: LOGOUT })
+    dispatch({ type: REMOVEUSERDETAILS })
     toast.success(data, toastifyoption)
+    navigate('/v3/seller/signin')
   }
 
   // theme switcher function
@@ -148,7 +151,7 @@ export default function AsideNavbar() {
         </div>
         <div className={`logout_section relative top-28 mx-3 `}>
           <div
-            onClick={(e)=>{
+            onClick={(e) => {
               e.preventDefault();
               LogoutFunc();
             }}

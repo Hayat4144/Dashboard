@@ -10,7 +10,7 @@ const UserReducer = (state = initailState, action) => {
         case USERDETAILS:
             return { ...state, data: action.payload }
         case REMOVEUSERDETAILS:
-            return { ...state, data: null }
+            return { ...state, data: [] }
         default:
             return state;
     }
