@@ -4,8 +4,8 @@ import { toast } from 'react-toastify'
 import { toastifyoption } from '../global/Notification'
 
 export default function Signup() {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [store_name, setStore_name] = useState('')
+  const [name, setName] = useState('')
   const [mobile_no, setmobile_no] = useState('')
   const [email, setemail] = useState('')
   const [password, setpassword] = useState('')
@@ -18,17 +18,17 @@ export default function Signup() {
 
   async function SignupFunc() {
     setisLoading(!isLoading)
-    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signup/`, {
+    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/signup/`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName,
-        lastName,
+        name,
+        store_name,
         email,
         password,
-        confirmpassword,
+        confirmpassword:confirmpassword,
       })
     })
     const { data, error } = await result.json();
@@ -55,12 +55,12 @@ export default function Signup() {
           }}>
             <div className='mx-5 lg:mx-4 mt-2'>
               <label htmlFor='Name' className='text-sm  text-gray-700'>
-                First Name</label>
+                Name</label>
               <input
                 type={'text'}
                 required
-                value={firstName}
-                onChange={(e) => { setFirstName(e.target.value) }}
+                value={name}
+                onChange={(e) => { setName(e.target.value) }}
                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                 focus:border  px-2 outline-none text-sm text-gray-700
@@ -69,12 +69,12 @@ export default function Signup() {
             </div>
             <div className='mx-5 lg:mx-4 mt-2'>
               <label htmlFor='Name' className='text-sm  text-gray-700'>
-                Last Name</label>
+                Store Name</label>
               <input
                 type={'text'}
                 required
-                value={lastName}
-                onChange={(e) => { setLastName(e.target.value) }}
+                value={store_name}
+                onChange={(e) => { setStore_name(e.target.value) }}
                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                 focus:border  px-2 outline-none text-sm text-gray-700
