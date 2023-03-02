@@ -1,5 +1,7 @@
 import React, { Fragment, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from "./Components/Dashboard";;
 import 'react-loading-skeleton/dist/skeleton.css'
 import SignupSkeleton from "./animation/SignupSkeleton";
@@ -46,6 +48,7 @@ export default function App() {
           <Route path="/v3/seller/signup" element={<Suspense fallback={<SignupSkeleton />}><Signup /></Suspense>} />
         </Routes>
       </Router>
+      <ToastContainer />
     </Fragment>
   );
 }
