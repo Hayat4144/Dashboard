@@ -12,12 +12,13 @@ export default function Signin() {
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { IsLogdin } = useSelector(state => state.Signin)
 
   // if user logdin redirect to home page
   useEffect(() => {
     if (IsLogdin) {
-      toast.success('You are already log in.', toastifyoption)
+      toast.info('You are already log in.', toastifyoption)
       return navigate('/');
     }
 
@@ -32,7 +33,7 @@ export default function Signin() {
 
   async function SubmitHandler() {
     setIsLoading(!isLoading)
-    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
+    const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/signin`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -45,8 +46,9 @@ export default function Signin() {
     });
     const { data, error, token } = await result.json();
     setIsLoading(false)
-    if (res.status !== 200) return toast.error(error, toastifyoption);
-    Decodejwt(data);
+    console.log(error, data)
+    if (result.status !== 200) return toast.error(error, toastifyoption);
+    Decodejwt(data, dispatch, navigate, searchParams);
   }
 
   return (
