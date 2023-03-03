@@ -1,5 +1,5 @@
 import React, { Fragment, useState, Suspense, lazy } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import AsideNavbar from '../../global/AsideNavbar'
 import { toastifyoption } from '../../global/Notification'
 import {toast} from 'react-toastify'
@@ -14,6 +14,7 @@ export default function PasswordChange() {
   const [showPassword1, setshowpassword1] = useState(false)
   const [showPassword2, setshowpassword2] = useState(false)
   const [showPassword3, setshowpassword3] = useState(false)
+  const{token} = useParams();
   // submitHandler 
   const SubmitHandler = async () => {
     setIsLoading(!isLoading)
@@ -25,7 +26,8 @@ export default function PasswordChange() {
       body: JSON.stringify({
         currentpassword,
         newpassword,
-        confirmpassword
+        confirmpassword,
+        token
       }),
       credentials: 'include'
     })

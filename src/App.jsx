@@ -15,6 +15,7 @@ import PasswordChangeSkeleton from './animation/PasswordChangeSkeleton'
 import EmailSkeleton from './animation/EmailSkeleton'
 import AddProductSkeleton from './animation/AddProductSkeleton'
 const MainAccount = lazy(() => import('./Components/Account/MainAccount'))
+const ForgetPasswordDone = lazy(() => import('./Components/Account/ForgetPasswordDone'))
 const Signup = lazy(() => import('./auth/Signup'))
 const Signin = lazy(() => import('./auth/Signin'))
 const Orders = lazy(() => import('./Components/Shop/Orders'))
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/v3/seller/account" element={<Suspense fallback={<AccountSkeleton />}><MainAccount /></Suspense>} />
           <Route path="/v3/seller/account/change/password" element={<Suspense fallback={<PasswordChangeSkeleton />}><PasswordChange /></Suspense>} />
           <Route path="/v3/seller/account/request/password/reset" element={<Suspense fallback={<EmailSkeleton />}><RequestForgetPassword /></Suspense>} />
+          <Route path="/v3/seller/account/request/password/reset/:token" element={<Suspense fallback={<PasswordChangeSkeleton />}><ForgetPasswordDone /></Suspense>} />
           <Route path="/v3/seller/account/profile" element={<Suspense fallback={<ProfileSkeleton />}><Profiles /></Suspense>} />
           <Route path="/v3/seller/transactions" element={<Suspense fallback={<TransactionSkeleton />}><Transactions /></Suspense>} />
           <Route path="/v3/seller/orders" element={<Suspense fallback={<OrderSkeleton />}><Orders /></Suspense>} />

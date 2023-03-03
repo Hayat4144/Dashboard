@@ -1,16 +1,19 @@
-import React, { Fragment, Suspense, lazy ,useState } from 'react'
+import React, { Fragment, Suspense, lazy, useState } from 'react'
+import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton'
+import MobileSkeleton from '../../animation/MobileSkeleton'
 import AsideNavbar from '../../global/AsideNavbar'
+import { toastifyoption } from '../../global/Notification'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
+import {toast} from 'react-toastify'
 
 export default function RequestForgetPassword() {
     const [email, setemail] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/reset/password/request`, {
+        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/reset/password/request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -24,39 +27,23 @@ export default function RequestForgetPassword() {
         setIsLoading(false)
         if (result.status === 200) {
             console.log(data)
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.success(data.data, toastifyoption);
         }
         else {
-            toast.error(data.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
+            toast.error(data.error, toastifyoption)
         }
     }
     return (
         <Fragment>
             <div className='md:hidden'>
-                <Suspense fallback={'loading...'}>
+                <Suspense fallback={<MobileSkeleton />}>
                     <MobileNavbar />
                 </Suspense>
             </div>
             <main className='flex'>
-                <AsideNavbar />
+                <Suspense fallback={<AsideNavbarSkeleton />}>
+                    <AsideNavbar />
+                </Suspense>
                 <div className='w-full h-screen dark:bg-gray-900'>
                     <h1 className='my-5 text-center text-xl dark:text-gray-200'>Forget password Request</h1>
                     <section
@@ -65,7 +52,7 @@ export default function RequestForgetPassword() {
                         md:px-5 md:mx-auto md:w-4/6 lg:w-2/5  mt-4 xl:mx-auto  lg:mx-auto 
                         md:my-10'>
                         <form
-                            onChange={(e) => {
+                            onSubmit={(e) => {
                                 e.preventDefault();
                                 SubmitHandler();
                             }}
@@ -75,7 +62,7 @@ export default function RequestForgetPassword() {
                                 <input
                                     type={'email'}
                                     value={email}
-                                    onChange={(e) => {setemail(e.target.value)}}
+                                    onChange={(e) => { setemail(e.target.value) }}
                                     className="px-2 py-2 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:shadow-md dark:bg-inherit dark:focus:border-gray-400 focus:border-indigo-800
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500"
@@ -85,7 +72,7 @@ export default function RequestForgetPassword() {
                             <button
                                 type='submit'
                                 className='text-center w-full bg-indigo-700 rounded-md py-2 px-2 hover:bg-indigo-800 text-white'>
-                                Change password
+                                Submit
                             </button>
                         </form>
                     </section>
