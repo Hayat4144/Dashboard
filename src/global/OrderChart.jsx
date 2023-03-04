@@ -198,8 +198,8 @@ export default function OrderChart() {
 
     return (
         <Fragment>
-            <div className='bg-white dark:bg-gray-800 dark:border-none shadow-md border my-10 border-gray-300
-            mx-2 md:mx-5 lg:mx-10 rounded-md'>
+            <div className='bg-white dark:bg-gray-800 dark:border-none shadow-md border my-5 border-gray-300
+            rounded-md'>
                 <div className='relative h-[50vh]'>
                     <Bar ref={ChartRef} data={chartData} options={chartOption} />
                 </div>
