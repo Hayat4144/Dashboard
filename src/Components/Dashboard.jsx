@@ -5,11 +5,13 @@ import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
 import WelcomeMessageSkeleton from '../animation/WelcomeMessageSkeleton'
 import OrderChartSkeleton from '../animation/OrderChartSkeleton'
 import TableSkeleton from '../animation/TableSkeleton'
+import SellSkeleton from '../animation/SellSkeleton'
 const MobileNavbar = lazy(() => import('../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
 const WelcomeMessage = lazy(() => import('../global/WelcomeMessage'))
 const Cards = lazy(() => import('./Cards'))
 const OrderChart = lazy(() => import('../global/OrderChart'))
+const Sell_Transaction = lazy(() => import('../global/Sell_Transaction'))
 const ProductList = lazy(() => import('./Shop/ProductList'))
 const TransactionSample = lazy(() => import('./TransactionSample'))
 
@@ -46,9 +48,17 @@ export default function Dashboard() {
                     <Suspense fallback={<CardSkeleton />}>
                         <Cards />
                     </Suspense>
-                    <Suspense fallback={<OrderChartSkeleton />}>
-                        <OrderChart />
-                    </Suspense>
+                    <div className='grid grid-cols-1 md:grid-cols-3 mx-2 md:mx-5 lg:mx-10 gap-5'>
+                        <Suspense fallback={<OrderChartSkeleton />}>
+                            <div className="col-span-2">
+                                <OrderChart />
+                            </div>
+                        </Suspense>
+                        <Suspense fallback={<SellSkeleton />}>
+                            <Sell_Transaction />
+                        </Suspense>
+                    </div>
+
                     <div className='transaction_contianer rounded-md shadow-md border
                     border-gray-300 dark:border-none mx-2 md:mx-5 lg:mx-10 my-5 dark:bg-gray-800'>
                         <div className='transaction_container_header py-2 sm:flex sm:justify-between sm:items-center sm:mx-2'>
