@@ -1,4 +1,4 @@
-import React, { useState, Fragment, lazy, Suspense } from 'react'
+import React, { Fragment, lazy, Suspense, useState } from 'react'
 import AsideNavbar from '../../global/AsideNavbar'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 
