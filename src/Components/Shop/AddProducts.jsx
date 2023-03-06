@@ -1,10 +1,11 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import AsideNavbar from '../../global/AsideNavbar'
 import { AiOutlineClose } from 'react-icons/ai'
 import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
 
 export default function AddProducts() {
+    const [CategroyData, SetCategroyData] = useState([])
     const [attributes, setAttributes] = useState('');
     const [selectedAttributes, setSelectedAttributes] = useState([])
     const [uploaded_images, setUploaded_images] = useState([])
@@ -15,28 +16,29 @@ export default function AddProducts() {
     const [brand, setbrand] = useState('')
     const [description, setDescription] = useState('')
     const [stock, setStock] = useState('')
-
+    const [selectedCategory, setSelectedCategory] = useState('')
+    console.log(selectedCategory);
     const StockChange = (e) => {
-        setStock(e.target.value)
+        setStock(Number(e.target.value))
     }
     const PriceChange = (e) => {
-        setPrice(e.target.value)
+        setPrice(Number(e.target.value))
     }
     const BrandChange = (e) => {
         setbrand(e.target.value)
     }
+    console.log(typeof price);
     const ProductNameChange = (e) => {
         setProduct_name(e.target.value)
     }
     const DescriptionChange = (e) => {
         setDescription(e.target.value)
     }
-
-
+    let updated_image_url = []
     function handleFileUpload(event) {
         const file = event.target.files[0];
         const image_as_base64 = URL.createObjectURL(file);
-        const updated_image_url = [...uploaded_images, { image_preview: image_as_base64, image_as_file: file }]
+        updated_image_url = [...uploaded_images, { image_preview: image_as_base64, image_as_file: file }]
         setUploaded_images(updated_image_url)
     }
     const handleOptionChange = (event) => {
@@ -45,29 +47,70 @@ export default function AddProducts() {
         setunique_attributes(Array.from(new Set(selectedAttributes.map(item => item))))
     };
 
+    const handlecategoryChange = (event) => {
+        setSelectedCategory(event.target.value)
+    }
+
     const Remove_attributes = (attribute) => {
         setunique_attributes(unique_attributes.filter(item => item !== attribute));
     }
 
-    let formData = new FormData();
-    uploaded_images.map((images) => {
-        formData.append('product_image', images.image_as_file)
-    })
-    formData.append('name', product_name)
-    formData.append('stock', stock)
-    formData.append('description', description)
-    formData.append('brand', brand)
-    formData.append('attributes_name', JSON.stringify(unique_attributes))
-    const AddProductHandler = async () => {
-        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/create/product`, {
-            method: "POST",
-            credentials:'include',
-            body: formData
+    // ------------------- fetch category data ---------------------------------- //
+    async function fetchCategoryData() {
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/get_all_categories`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
         })
         const { data, error } = await response.json();
         if (response.status !== 200) return toast.error(error, toastifyoption);
-        toast.success(data, toastifyoption)
+        SetCategroyData(data)
     }
+
+    useEffect(() => {
+        fetchCategoryData();
+    }, [])
+
+
+    const AddProductHandler = async () => {
+        setIsLoading(!isLoading)
+        let formData = new FormData();
+        uploaded_images.map((images) => {
+            formData.append('product_image', images.image_as_file)
+        })
+        formData.append('name', product_name)
+        formData.append('price', price)
+        formData.append('stock', stock)
+        formData.append('description', description)
+        formData.append('brand', brand)
+        formData.append('category', selectedCategory)
+        formData.append('attributes_name', JSON.stringify(unique_attributes))
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/create/product`, {
+            method: "POST",
+            credentials: 'include',
+            body: formData
+        })
+        const { data, error } = await response.json();
+        setIsLoading(false)
+        if (response.status !== 200) return toast.error(error, toastifyoption);
+        setunique_attributes([])
+        setAttributes('')
+        setSelectedAttributes([])
+        setProduct_name('')
+        setPrice('')
+        setbrand('')
+        setDescription('')
+        setSelectedCategory('')
+        setStock('')
+        setUploaded_images([])
+        updated_image_url = []
+        toast.success(data, toastifyoption)
+
+    }
+
+    console.clear();
 
     return (
         <Fragment>
@@ -123,12 +166,14 @@ export default function AddProducts() {
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                     />
                                 </div>
-                                <div className='category'>
-                                    <label htmlFor="category" className='dark:text-gray-200 text-gray-700'>Category</label>
+                                <div className='brand '>
+                                    <label htmlFor="brand" className='dark:text-gray-200 text-gray-700'>Brand</label>
                                     <input
                                         type={'text'}
                                         required
-                                        placeholder='Enter product category'
+                                        value={brand}
+                                        onChange={BrandChange}
+                                        placeholder='Enter product brand'
                                         className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
@@ -148,7 +193,7 @@ export default function AddProducts() {
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                     />
                                 </div>
-                                <div className='attributes col-span-2 mb-2'>
+                                <div className='attributes col-span-2'>
                                     <label htmlFor="attributes" className='dark:text-gray-200 text-gray-700'>Attributes</label>
                                     <select
                                         defaultValue={attributes}
@@ -177,18 +222,20 @@ export default function AddProducts() {
                                         )) : null}
                                     </div>
                                 </div>
-                                <div className='brand col-span-2'>
-                                    <label htmlFor="brand" className='dark:text-gray-200 text-gray-700'>Brand</label>
-                                    <input
-                                        type={'text'}
-                                        required
-                                        value={brand}
-                                        onChange={BrandChange}
-                                        placeholder='Enter product brand'
-                                        className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
-                                    focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
-                                    my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
-                                    />
+                                <div className='category col-span-2'>
+                                    <label htmlFor="category" className='dark:text-gray-200 text-gray-700'>Category</label>
+                                    <select
+                                        defaultValue={selectedCategory}
+                                        onChange={handlecategoryChange}
+                                        className='px-2 py-1.5 outline-none rounded-md border border-gray-400
+                                        focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
+                                        my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 dark:bg-gray-800'
+                                    >
+                                        <option className='dark:bg-gray-700' defaultValue>Choose a category</option>
+                                        {CategroyData.map((category) => (
+                                            <option value={category._id} key={category._id} className="dark:bg-gray-700">{category.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <section className='images my-5'>
