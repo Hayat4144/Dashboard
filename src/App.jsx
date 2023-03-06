@@ -19,6 +19,7 @@ const ForgetPasswordDone = lazy(() => import('./Components/Account/ForgetPasswor
 const Signup = lazy(() => import('./auth/Signup'))
 const Signin = lazy(() => import('./auth/Signin'))
 const Orders = lazy(() => import('./Components/Shop/Orders'))
+const AddVareint = lazy(()=> import('./Components/Shop/AddVareint'))
 const Profiles = lazy(() => import('./Components/Account/Profiles'))
 const Address = lazy(() => import('./Components/Account/Address'))
 const EditProduct = lazy(() => import('./Components/Shop/EditProduct'))
@@ -48,6 +49,7 @@ export default function App() {
           <Route path="/v3/seller/edit/product/:id" element={<Suspense fallback={<AddProductSkeleton />}><EditProduct /></Suspense>} />
           <Route path="/v3/seller/signin" element={<Suspense fallback={<SinginSkeleton />}><Signin /></Suspense>} />
           <Route path="/v3/seller/signup" element={<Suspense fallback={<SignupSkeleton />}><Signup /></Suspense>} />
+          <Route path="/v3/seller/product/add/varient/:id" element={<Suspense fallback={'loding'}><AddVareint /></Suspense>} />
         </Routes>
       </Router>
       <ToastContainer />
