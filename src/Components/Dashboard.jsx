@@ -1,4 +1,4 @@
-import React, { Fragment, useState, lazy, Suspense } from 'react'
+import React, { Fragment, useState, lazy, Suspense ,useEffect } from 'react'
 import CardSkeleton from '../animation/CardSkeleton'
 import MobileSkeleton from '../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
@@ -16,6 +16,8 @@ const ProductList = lazy(() => import('./Shop/ProductList'))
 const TransactionSample = lazy(() => import('./TransactionSample'))
 
 export default function Dashboard() {
+    const [products, setProducts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [transactionData, setTransactionData] = useState([
         { name: 'Product 1', price: 19.99, date: '2022-12-31', amount: 2, paymentMethod: 'Credit Card', id: '1' },
         { name: 'Product 2', price: 9.99, date: '2023-01-01', amount: 1, paymentMethod: 'Paypal', id: '2' },
@@ -30,6 +32,25 @@ export default function Dashboard() {
     nextTendays.setDate(current_date.getDate() + 10)
     console.log(nextTendays.toISOString().substring(0, 10))
     const [toDate, setToDate] = useState(nextTendays.toISOString().substring(0, 10))
+
+    async function FetchProduct() {
+        setIsLoading(!isLoading)
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/products`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'applicition/json'
+            },
+            credentials: 'include'
+        });
+        const { data, error } = await response.json();
+        setIsLoading(false)
+        if (response.status !== 200) return toast.error(error, toastifyoption);
+        setProducts(data)
+    }
+    useEffect(() => {
+        FetchProduct();
+    }, [])
+
     return (
         <Fragment>
             <div className='md:hidden'>
@@ -91,7 +112,12 @@ export default function Dashboard() {
                         </Suspense>
                     </div>
                     <Suspense fallback={<TableSkeleton />}>
-                        <ProductList />
+                        {isLoading ? <TableSkeleton /> :
+                            <Fragment>
+                                <ProductList products={products} />
+                                <Fragment />
+                            </Fragment>
+                        }
                     </Suspense>
 
                 </main>

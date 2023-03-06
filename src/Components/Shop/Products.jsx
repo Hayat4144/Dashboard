@@ -1,12 +1,60 @@
-import React, { Fragment, lazy, Suspense } from 'react'
+import React, { Fragment, lazy, Suspense, useState, useEffect } from 'react'
 import AsideNavbar from '../../global/AsideNavbar'
 import { Link } from 'react-router-dom'
 import ProductList from './ProductList'
 import MobileSkeleton from '../../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton'
 import TableSkeleton from '../../animation/TableSkeleton'
+import { toast } from 'react-toastify'
+import { toastifyoption } from '../../global/Notification'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { AiOutlineArrowRight } from 'react-icons/ai'
+
 export default function Products() {
+    const [products, setProducts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [showProductPerPage, setShowProductPerPage] = useState(5)
+    const [currentPage, setCurrentPage] = useState(1)
+
+    async function FetchProduct() {
+        setIsLoading(!isLoading)
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/products`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'applicition/json'
+            },
+            credentials: 'include'
+        });
+        const { data, error } = await response.json();
+        setIsLoading(false)
+        if (response.status !== 200) return toast.error(error, toastifyoption);
+        setProducts(data)
+    }
+    useEffect(() => {
+        FetchProduct();
+    }, [])
+
+
+    //  ------------------ pagination logic ----------------
+    if (products.length > showProductPerPage) {
+        var numberofPages = Math.ceil(products.length / showProductPerPage);
+        console.log(numberofPages);
+        var page_number = [...Array(numberofPages + 1).keys()].slice(1)
+    }
+
+    const nextPage = () => {
+        if (currentPage !== numberofPages) {
+            setCurrentPage(currentPage + 1)
+        }
+
+    }
+    const previousPage = () => {
+        if (currentPage !== 1)
+            setCurrentPage(currentPage - 1)
+    }
+
+
     return (
         <Fragment>
             <header className='md:hidden'>
@@ -25,7 +73,50 @@ export default function Products() {
                         rounded-md dark:bg-indigo-600 bg-indigo-700 hover:bg-indigo-700'>Add product</Link>
                     </div>
                     <Suspense fallback={<TableSkeleton />}>
-                        <ProductList />
+                        {isLoading ? <TableSkeleton /> :
+                            <Fragment>
+                                <ProductList products={products} />
+                                {
+                                    products.length > showProductPerPage ? <div className='paginations my-3 md:my-5 lg:my-10'>
+                                        <section className='pagination_container my-5'>
+                                            <div className='pagination_box flex items-center justify-center space-x-5'>
+                                                <div className='previous_btn'>
+                                                    <button onClick={previousPage} disabled={currentPage === 1 ? true : false}
+                                                        className='bg-indigo-700 text-white md:px-5 py-1.5 
+                                            rounded-md text-center px-3'>
+                                                        <AiOutlineArrowLeft className='md:text-2xl' />
+                                                    </button>
+                                                </div>
+                                                <div className='page_number_container  flex items-center space-x-3'>
+                                                    {
+                                                        page_number.map(pg_number => (
+                                                            <button key={pg_number}
+                                                                onClick={() => {
+                                                                    setCurrentPage(pg_number)
+                                                                }}
+                                                                className=
+                                                                {`${currentPage === pg_number ? 'border-none bg-indigo-700 text-white rounded-full outline-none' : ''}
+                                                rounded-full focus:border-non hover:border-none  w-10 h-10 
+                                                transition ease-out duration-500 hover:bg-indigo-700 hover:border border-gray-400 border
+                                                hover:text-white dark:text-gray-200 dark:focus:text-white`}
+                                                            >{pg_number}</button>
+                                                        ))
+                                                    }
+
+
+                                                </div>
+                                                <div className='next_btn'>
+                                                    <button onClick={nextPage}
+                                                        className='bg-indigo-700 md:px-5 text-white py-1.5 
+                                    px-4 rounded-md text-center'>
+                                                        <AiOutlineArrowRight className='md:text-2xl' />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div > : null
+                                }
+                            </Fragment>}
                     </Suspense>
                 </main>
             </div>
