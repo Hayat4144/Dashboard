@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useState, lazy } from 'react'
+import React, { Fragment, Suspense, useState, lazy, useEffect } from 'react'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 import OrdersSample from './OrdersSample';
@@ -6,20 +6,14 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import TableSkeleton from '../../animation/TableSkeleton';
 import OrderSkeleton from '../../animation/OrderSkeleton';
+import { toast } from 'react-toastify';
+import { toastifyoption } from '../../global/Notification';
+import MobileSkeleton from '../../animation/MobileSkeleton';
+import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton';
 
 export default function Orders() {
-    const [orderData, setOrderData] = useState([
-        { name: 'Product 1', price: 19.99, date: '2022-12-31', amount: 42, paymentMethod: 'Credit Card', id: '1' },
-        { name: 'Product 2', price: 9.99, date: '2023-01-01', amount: 42, paymentMethod: 'Paypal', id: '2' },
-        { name: 'Product 3', price: 4.99, date: '2023-01-02', amount: 25, paymentMethod: 'Debit Card', id: '3' },
-        { name: 'Product 4', price: 355.32, date: '2023-01-02', amount: 423, paymentMethod: 'Debit Card', id: '4' },
-        { name: 'Product 5', price: 342, date: '2023-01-02', amount: 534, paymentMethod: 'Debit Card', id: '5' },
-        { name: 'Product 6', price: 2430, date: '2023-01-02', amount: 235, paymentMethod: 'Debit Card', id: '6' },
-        { name: 'Product 7', price: 2430, date: '2023-05-12', amount: 235, paymentMethod: 'Debit Card', id: '7' },
-        { name: 'Product 8', price: 2430, date: '2023-07-23', amount: 235, paymentMethod: 'Debit Card', id: '8' },
-        { name: 'Product 9', price: 2430, date: '2023-08-20', amount: 2352, paymentMethod: 'Cash on delivary', id: '9' },
-        { name: 'Product 10', price: 2430, date: '2023-01-02', amount: 397, paymentMethod: 'Net banking', id: '10' },
-    ])
+    const [orderData, setOrderData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const current_date = new Date();
     const [fromDate, setfromDate] = useState(current_date.toISOString().substring(0, 10));
     const nextTendays = new Date(current_date)
@@ -28,6 +22,35 @@ export default function Orders() {
     const [toDate, setToDate] = useState(nextTendays.toISOString().substring(0, 10))
     const [showProductPerPage, setShowProductPerPage] = useState(5)
     const [currentPage, setCurrentPage] = useState(1)
+
+    async function GetOrder() {
+        setIsLoading(!isLoading)
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/order`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ from: fromDate, to: toDate })
+        })
+        const { data, error } = await response.json();
+        setIsLoading(false)
+        if (response.status !== 200) {
+            toast.success(error, toastifyoption)
+            return;
+        }
+        const new_data = data.map(order => {
+            const date = new Date(order.date);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const humanReadableDate = date.toLocaleDateString('en-US', options);
+            return { ...order, date: humanReadableDate }
+        })
+        setOrderData(new_data)
+    }
+
+    useEffect(() => {
+        GetOrder();
+    }, [fromDate, toDate])
 
 
     //  ------------------ pagination logic ----------------
@@ -50,12 +73,12 @@ export default function Orders() {
     return (
         <Fragment>
             <header className='md:hidden'>
-                <Suspense fallback={'loading...'}>
+                <Suspense fallback={<MobileSkeleton />}>
                     <MobileNavbar />
                 </Suspense>
             </header>
             <main className='flex'>
-                <Suspense fallback={<p>loading..</p>}>
+                <Suspense fallback={<AsideNavbarSkeleton />}>
                     <AsideNavbar />
                 </Suspense>
                 <section className='w-full h-full dark:bg-gray-900'>
@@ -89,9 +112,18 @@ export default function Orders() {
                                 </h2>
                             </div>
                         </div>
-                        <Suspense fallback={<TableSkeleton />}>
-                            <OrdersSample OrderData={orderData} />
-                        </Suspense>
+                        {
+                            isLoading ? <TableSkeleton />
+                                : orderData.length > 0 ?
+                                    <Suspense fallback={<TableSkeleton />}>
+                                        <OrdersSample OrderData={orderData} />
+                                    </Suspense>
+                                    :
+                                    <div>
+                                        <p>You have not order yet.</p>
+                                    </div>
+                        }
+
                     </div>
                     {
                         orderData.length > showProductPerPage ? <div className='paginations my-16'>
