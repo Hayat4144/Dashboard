@@ -49,10 +49,11 @@ export default function AsideNavbar() {
     })
     const { data, error } = await response.json();
     if (response.status !== 200) return toast.error(error, toastifyoption);
+    localStorage.setItem('theme','light')
     dispatch({ type: LOGOUT })
     dispatch({ type: REMOVEUSERDETAILS })
     toast.success(data, toastifyoption)
-    navigate('/v3/seller/signin')
+    location.href="/v3/seller/signin"
   }
 
   // theme switcher function
@@ -103,7 +104,7 @@ export default function AsideNavbar() {
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Dashboard</span>
               </li>
             </Link>
-            <Link>
+            <Link to="/v3/seller/analytic">
               <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 my-1 py-2 hover:rounded-md">
                 <AnalyticsOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Analytics</span>

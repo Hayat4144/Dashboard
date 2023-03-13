@@ -25,11 +25,11 @@ export default function Transactions() {
     const [showProductPerPage, setShowProductPerPage] = useState(5)
     const [currentPage, setCurrentPage] = useState(1)
     const current_date = new Date();
-    const [fromDate, setfromDate] = useState(current_date.toISOString().substring(0, 10));
-    const nextTendays = new Date(current_date)
-    nextTendays.setDate(current_date.getDate() + 10)
-    console.log(nextTendays.toISOString().substring(0, 10))
-    const [toDate, setToDate] = useState(nextTendays.toISOString().substring(0, 10))
+    const prevTendays = new Date(current_date)
+    prevTendays.setDate(current_date.getDate() - 10)
+    const [fromDate, setfromDate] = useState(prevTendays.toISOString().substring(0, 10));
+    console.log(prevTendays.toISOString().substring(0, 10))
+    const [toDate, setToDate] = useState(current_date.toISOString().substring(0,10))
 
 
 
@@ -51,6 +51,7 @@ export default function Transactions() {
             setCurrentPage(currentPage - 1)
     }
 
+    console.clear();
 
     return (
         <Fragment>
@@ -98,7 +99,7 @@ export default function Transactions() {
                             <TransactionSample transactionData={transactionData} />
                         </Suspense>
                     </div>
-                    {
+                    {/* {
                         transactionData.length > showProductPerPage ? <div className='paginations my-16'>
                             <section className='pagination_container my-5'>
                                 <div className='pagination_box flex items-center justify-center space-x-5'>
@@ -137,7 +138,7 @@ export default function Transactions() {
                                 </div>
                             </section>
                         </div > : ''
-                    }
+                    } */}
                 </section>
             </main>
         </Fragment>

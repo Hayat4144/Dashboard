@@ -1,8 +1,11 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import AsideNavbar from '../../global/AsideNavbar'
+import React, { Fragment, useState, useEffect, Suspense, lazy } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
+const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
+const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
+import MobileSkeleton from '../../animation/MobileSkeleton';
+import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton';
 
 export default function AddProducts() {
     const [CategroyData, SetCategroyData] = useState([])
@@ -110,13 +113,18 @@ export default function AddProducts() {
 
     }
 
-    console.clear();
 
     return (
         <Fragment>
-            {console.log(uploaded_images)}
+            <header className='md:hidden'>
+                <Suspense fallback={<MobileSkeleton />}>
+                    <MobileNavbar />
+                </Suspense>
+            </header>
             <div className='flex'>
-                <AsideNavbar />
+                <Suspense fallback={<AsideNavbarSkeleton />}>
+                    <AsideNavbar />
+                </Suspense>
                 <main className='add_product_page w-full h-full dark:bg-gray-900'>
                     <h1 className='product_add_text dark:text-gray-200 my-5 mx-5 md:mx-8 lg:mx-10 text-2xl'>Add a new product</h1>
                     <form className='mx-5 my-5  rounded-lg  shadow-2xl

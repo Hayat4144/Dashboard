@@ -16,6 +16,7 @@ import EmailSkeleton from './animation/EmailSkeleton'
 import AddProductSkeleton from './animation/AddProductSkeleton'
 const MainAccount = lazy(() => import('./Components/Account/MainAccount'))
 const ForgetPasswordDone = lazy(() => import('./Components/Account/ForgetPasswordDone'))
+const EmailChange = lazy(() => import('./Components/Account/EmailChange'))
 const Signup = lazy(() => import('./auth/Signup'))
 const Signin = lazy(() => import('./auth/Signin'))
 const Orders = lazy(() => import('./Components/Shop/Orders'))
@@ -29,6 +30,7 @@ const PasswordChange = lazy(() => import('./Components/Account/PasswordChange'))
 const AddProducts = lazy(() => import('./Components/Shop/AddProducts'))
 const Transactions = lazy(() => import('./Components/Shop/Transactions'))
 const Products = lazy(() => import('./Components/Shop/Products'))
+const MainAnalytics = lazy(() => import('./Components/Analytics/MainAnalytics'))
 
 
 export default function App() {
@@ -40,8 +42,7 @@ export default function App() {
             path="/"
             element={<Dashboard />} />
           <Route
-            path="/v3/seller/a
-          dd/product"
+            path="/v3/seller/add/product"
             element={<Suspense fallback={<AddProductSkeleton />}><AddProducts /></Suspense>}
           />
           <Route
@@ -80,7 +81,8 @@ export default function App() {
             path="/v3/seller/orders"
             element={<Suspense fallback={<OrderSkeleton />}><Orders /></Suspense>}
           />
-          <Route path="/v3/seller/edit/product/:id"
+          <Route
+            path="/v3/seller/edit/product/:id"
             element={<Suspense fallback={<AddProductSkeleton />}><EditProduct /></Suspense>}
           />
           <Route
@@ -99,7 +101,14 @@ export default function App() {
             path="/v3/seller/order/product/:id"
             element={<Suspense fallback={<p>loading..</p>}><OrderProuduct /></Suspense>}
           />
-
+          <Route
+            path="/v3/seller/account/change/email"
+            element={<Suspense fallback={<PasswordChangeSkeleton />}><EmailChange /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/analytic"
+            element={<Suspense fallback={<p>loading..</p>}><MainAnalytics /></Suspense>}
+          />
         </Routes>
       </Router>
       <ToastContainer />

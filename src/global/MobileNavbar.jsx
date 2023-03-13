@@ -14,7 +14,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { FaUserCircle } from 'react-icons/fa'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { toastifyoption } from './Notification';
 import { LOGOUT, REMOVEUSERDETAILS } from "../Context/actions/ActionsType";
@@ -23,6 +23,7 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
   const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
+  const { data } = useSelector(state => state.User)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,7 +46,8 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
   }
 
   const LogoutFunc = async () => {
-    const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/seller/auth/logout`, {
+    console.log('clicked');
+    const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/logout`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -57,7 +59,9 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
     dispatch({ type: LOGOUT })
     dispatch({ type: REMOVEUSERDETAILS })
     toast.success(data, toastifyoption)
-    navigate('/v3/seller/signin')
+    localStorage.setItem('theme','light')
+    location.href = '/v3/seller/signin'
+
   }
 
 
@@ -88,7 +92,7 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
             </div>
             <div className='user_name '>
               <h2 className='user_name_text'>
-                Hello , Signin
+                Hello , {data.name}
               </h2>
             </div>
           </div>
@@ -160,7 +164,7 @@ export default function MobileNavbar({ mobileModal, MobileSideModalToggle }) {
                     e.preventDefault();
                     LogoutFunc();
                   }}
-                  className="flex space-x-3 hover:bg-indigo-600 cursor-pointer
+                  className="flex space-x-3 cursor-pointer
            hover:text-white px-2  py-2 my-1 hover:rounded-md">
                   <LogoutIcon className="dark:text-white" />
                   <span className={`dark:text-gray-200`}>Log out</span>

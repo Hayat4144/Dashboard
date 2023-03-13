@@ -19,7 +19,7 @@ export default function Signin() {
   useEffect(() => {
     if (IsLogdin) {
       toast.info('You are already log in.', toastifyoption)
-      // return navigate('/');
+      return navigate('/');
     }
 
   }, [])
@@ -137,7 +137,7 @@ export default function Signin() {
           <div className='new_accoutn_btn mx-4 my-10'>
             <button className='w-full bg-indigo-800 py-2 px-6 rounded-md mb-2
           text-white hover:bg-indigo-900'>
-              <Link to={"/V2/auth/sign_up"}>Create new account</Link>
+              <Link to={"/V3/seller/signup"}>Create new account</Link>
             </button>
 
           </div>

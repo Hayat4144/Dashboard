@@ -68,7 +68,7 @@ export default function ProductList({ products, setproducts }) {
                                             <td className="px-2 py-2">{product.brand}</td>
                                             <td className="px-2 py-2">{product.price}</td>
                                             <td className="px-2 py-2 space-x-5">
-                                                <Link to={`/v3/seller/edit/product/${product.id}`}>
+                                                <Link to={`/v3/seller/edit/product/${product._id}`}>
                                                     <EditOutlinedIcon />
                                                 </Link>
                                                 <DeleteOutlineOutlinedIcon onClick={() => handleDelete(product._id)} />
