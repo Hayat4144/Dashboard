@@ -19,7 +19,8 @@ const ForgetPasswordDone = lazy(() => import('./Components/Account/ForgetPasswor
 const Signup = lazy(() => import('./auth/Signup'))
 const Signin = lazy(() => import('./auth/Signin'))
 const Orders = lazy(() => import('./Components/Shop/Orders'))
-const AddVareint = lazy(()=> import('./Components/Shop/AddVareint'))
+const OrderProuduct = lazy(() => import('./Components/Shop/OrderProuduct'))
+const AddVareint = lazy(() => import('./Components/Shop/AddVareint'))
 const Profiles = lazy(() => import('./Components/Account/Profiles'))
 const Address = lazy(() => import('./Components/Account/Address'))
 const EditProduct = lazy(() => import('./Components/Shop/EditProduct'))
@@ -35,21 +36,70 @@ export default function App() {
     <Fragment>
       <Router>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/v3/seller/add/product" element={<Suspense fallback={<AddProductSkeleton />}><AddProducts /></Suspense>} />
-          <Route path="/v3/seller/account/address" element={<Suspense fallback={<AddressSkeleton />}><Address /></Suspense>} />
-          <Route path="/v3/seller/products" element={<Suspense fallback={<TransactionSkeleton />}><Products /></Suspense>} />
-          <Route path="/v3/seller/account" element={<Suspense fallback={<AccountSkeleton />}><MainAccount /></Suspense>} />
-          <Route path="/v3/seller/account/change/password" element={<Suspense fallback={<PasswordChangeSkeleton />}><PasswordChange /></Suspense>} />
-          <Route path="/v3/seller/account/request/password/reset" element={<Suspense fallback={<EmailSkeleton />}><RequestForgetPassword /></Suspense>} />
-          <Route path="/v3/seller/account/request/password/reset/:token" element={<Suspense fallback={<PasswordChangeSkeleton />}><ForgetPasswordDone /></Suspense>} />
-          <Route path="/v3/seller/account/profile" element={<Suspense fallback={<ProfileSkeleton />}><Profiles /></Suspense>} />
-          <Route path="/v3/seller/transactions" element={<Suspense fallback={<TransactionSkeleton />}><Transactions /></Suspense>} />
-          <Route path="/v3/seller/orders" element={<Suspense fallback={<OrderSkeleton />}><Orders /></Suspense>} />
-          <Route path="/v3/seller/edit/product/:id" element={<Suspense fallback={<AddProductSkeleton />}><EditProduct /></Suspense>} />
-          <Route path="/v3/seller/signin" element={<Suspense fallback={<SinginSkeleton />}><Signin /></Suspense>} />
-          <Route path="/v3/seller/signup" element={<Suspense fallback={<SignupSkeleton />}><Signup /></Suspense>} />
-          <Route path="/v3/seller/product/add/varient/:id" element={<Suspense fallback={'loding'}><AddVareint /></Suspense>} />
+          <Route
+            path="/"
+            element={<Dashboard />} />
+          <Route
+            path="/v3/seller/a
+          dd/product"
+            element={<Suspense fallback={<AddProductSkeleton />}><AddProducts /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account/address"
+            element={<Suspense fallback={<AddressSkeleton />}><Address /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/products"
+            element={<Suspense fallback={<TransactionSkeleton />}><Products /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account"
+            element={<Suspense fallback={<AccountSkeleton />}><MainAccount /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account/change/password"
+            element={<Suspense fallback={<PasswordChangeSkeleton />}><PasswordChange /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account/request/password/reset"
+            element={<Suspense fallback={<EmailSkeleton />}><RequestForgetPassword /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account/request/password/reset/:token"
+            element={<Suspense fallback={<PasswordChangeSkeleton />}><ForgetPasswordDone /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/account/profile"
+            element={<Suspense fallback={<ProfileSkeleton />}><Profiles /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/transactions"
+            element={<Suspense fallback={<TransactionSkeleton />}><Transactions /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/orders"
+            element={<Suspense fallback={<OrderSkeleton />}><Orders /></Suspense>}
+          />
+          <Route path="/v3/seller/edit/product/:id"
+            element={<Suspense fallback={<AddProductSkeleton />}><EditProduct /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/signin"
+            element={<Suspense fallback={<SinginSkeleton />}><Signin /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/signup"
+            element={<Suspense fallback={<SignupSkeleton />}><Signup /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/product/add/varient/:id"
+            element={<Suspense fallback={'loding'}><AddVareint /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/order/product/:id"
+            element={<Suspense fallback={<p>loading..</p>}><OrderProuduct /></Suspense>}
+          />
+
         </Routes>
       </Router>
       <ToastContainer />
