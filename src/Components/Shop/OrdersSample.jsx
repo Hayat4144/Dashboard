@@ -1,6 +1,11 @@
 import React, { Fragment } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function OrdersSample({ OrderData }) {
+    const navigate = useNavigate();
+    function ChangeRoute(id) {
+        navigate(`/v3/seller/order/product/${id}`)
+    }
     return (
         <Fragment>
             <section className='transaction_data rounded-b-md overflow-x-auto dark:bg-gray-800'>
@@ -15,7 +20,7 @@ export default function OrdersSample({ OrderData }) {
                     </thead>
                     <tbody className='mb-2'>
                         {OrderData.map((transaction, index) => (
-                            <tr key={index} className="border-b border-gray-300 dark:border-gray-500 cursor-pointer  hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-200">
+                            <tr key={index} onClick={(e)=> ChangeRoute(transaction._id)} className="border-b border-gray-300 dark:border-gray-500 cursor-pointer  hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-200">
                                 <td className="px-4 py-2">{transaction._id}</td>
                                 <td className="px-4 py-2">{transaction.status}</td>
                                 <td className="px-4 py-2">{transaction.date}</td>
