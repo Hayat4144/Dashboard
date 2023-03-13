@@ -93,21 +93,23 @@ export default function MainAccount() {
                                     </p>
                                 </div>
                             </div></Link>
-
-                        <div className='border border-gray-300 dark:border-none h-28
+                        <Link to="/v3/seller/account/change/email/request">
+                            <div className='border border-gray-300 dark:border-none h-28
                             text-gray-900 dark:text-gray-200 rounded-md px-5 py-2 flex 
                             space-x-5 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800
                             dark:bg-gray-800 duration-300 hover:translate-y-2'>
-                            <figure>
-                                <img src={EmailImage} className="h-[70px] " />
-                            </figure>
-                            <div className='password_text'>
-                                <h3 className='text-bold'>Change your email</h3>
-                                <p className='text-sm'>
-                                    you can change your email here.
-                                </p>
+                                <figure>
+                                    <img src={EmailImage} className="h-[70px] " />
+                                </figure>
+                                <div className='password_text'>
+                                    <h3 className='text-bold'>Change your email</h3>
+                                    <p className='text-sm'>
+                                        you can change your email here.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
+
                         <Link to="/v3/seller/transactions">
                             <div className='border border-gray-300 dark:border-none h-28
                             text-gray-900 dark:text-gray-200 rounded-md px-5 py-2 flex 
