@@ -17,6 +17,7 @@ import AddProductSkeleton from './animation/AddProductSkeleton'
 const MainAccount = lazy(() => import('./Components/Account/MainAccount'))
 const ForgetPasswordDone = lazy(() => import('./Components/Account/ForgetPasswordDone'))
 const EmailChange = lazy(() => import('./Components/Account/EmailChange'))
+const EmailChangeRequest = lazy(() => import('./Components/Account/EmailChangeRequest'))
 const Signup = lazy(() => import('./auth/Signup'))
 const Signin = lazy(() => import('./auth/Signin'))
 const Orders = lazy(() => import('./Components/Shop/Orders'))
@@ -102,13 +103,18 @@ export default function App() {
             element={<Suspense fallback={<p>loading..</p>}><OrderProuduct /></Suspense>}
           />
           <Route
-            path="/v3/seller/account/change/email"
+            path="/v3/seller/account/change/email/request"
+            element={<Suspense fallback={<PasswordChangeSkeleton />}><EmailChangeRequest /></Suspense>}
+          />
+          <Route
+            path="/v3/seller/change/email/link/verify/:id/:token"
             element={<Suspense fallback={<PasswordChangeSkeleton />}><EmailChange /></Suspense>}
           />
           <Route
             path="/v3/seller/analytic"
             element={<Suspense fallback={<p>loading..</p>}><MainAnalytics /></Suspense>}
           />
+
         </Routes>
       </Router>
       <ToastContainer />

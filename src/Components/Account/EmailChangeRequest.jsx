@@ -1,52 +1,27 @@
-import React, { Fragment, Suspense, lazy, useState, useEffect } from 'react'
+import React, { Fragment, Suspense, lazy, useState } from 'react'
 import { toastifyoption } from '../../global/Notification'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 import { toast } from 'react-toastify';
 import MobileSkeleton from '../../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../../animation/AsideNavbarSkeleton'
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-export default function EmailChange() {
-    const [new_email, setNew_email] = useState('')
-    const [confirm_email, setConfirm_email] = useState('')
+export default function EmailChangeRequest() {
+    const [old_email, setOld_email] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const { token, id } = useParams();
-    const { data } = useSelector(state => state.User)
-    const navigate = useNavigate();
 
-    function validUser() {
-        if (id !== data.id) {
-            toast.info('Invalid link', toastifyoption)
-            navigate('/')
-            return;
-        }
+    function oldEmailChange(e) {
+        setOld_email(e.target.value)
     }
-
-    useEffect(() => {
-        validUser();
-    }, [])
-
-    // change handler
-    function newEmailChange(e) {
-        setNew_email(e.target.value)
-    }
-    function confirmEmailChange(e) {
-        setConfirm_email(e.target.value)
-    }
-
     async function EmailChangeHandler() {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/email/change/done`, {
-            method: 'PUT',
+        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/email/change/request`, {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                new_email,
-                confirmemail: confirm_email,
-                token
+               current_email: old_email
             }),
             credentials: 'include'
         })
@@ -54,8 +29,7 @@ export default function EmailChange() {
         setIsLoading(false)
         if (result.status !== 200) return toast.error(error, toastifyoption);
         toast.success(data, toastifyoption);
-        setConfirm_email('')
-        setNew_email('')
+        setOld_email('')
     }
     return (
         <Fragment>
@@ -69,7 +43,7 @@ export default function EmailChange() {
                     <AsideNavbar />
                 </Suspense>
                 <div className='w-full h-screen dark:bg-gray-900'>
-                    <h2 className='text-center dark:text-gray-200 text-gray-700 my-5 text-xl'>Change your email</h2>
+                    <h2 className='text-center dark:text-gray-200 text-gray-700 my-5 text-xl'>Email change request</h2>
                     <form
                         className='text-gray-700 dark:text-gray-200 border border-gray-300 px-2 mx-2
                         rounded-md py-5 dark:bg-gray-800 dark:border-none my-5 dark:shadow-2xl shadow-md
@@ -79,31 +53,18 @@ export default function EmailChange() {
                             e.preventDefault();
                             EmailChangeHandler();
                         }}>
-                        <div className='new_email'>
-                            <label htmlFor="new_email">New Email</label>
-                            <input
-                                type={'email'}
-                                id="new_email"
-                                required
-                                value={new_email}
-                                onChange={newEmailChange}
-                                className="px-2 py-2 outline-none rounded-md border border-gray-400 text-sm 
-                                focus:shadow-md dark:bg-inherit dark:focus:border-gray-400 focus:border-indigo-800
-                                my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500"
-                                placeholder='Enter your new email' />
-                        </div>
-                        <div className='confirm_email'>
-                            <label htmlFor="confirm_email">Confirm Email</label>
+                        <div className='current_email'>
+                            <label htmlFor="current_email">Current Email</label>
                             <input
                                 type={'email'}
                                 required
-                                id="confirm_email"
-                                value={confirm_email}
-                                onChange={confirmEmailChange}
+                                id="current_email"
+                                value={old_email}
+                                onChange={oldEmailChange}
                                 className="px-2 py-2 outline-none rounded-md border border-gray-400 text-sm 
                                 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400 focus:border-indigo-800
                                 my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500"
-                                placeholder='Enter your confirm email' />
+                                placeholder='Enter your current email' />
                         </div>
                         <div className='submit_btn mb-5 my-2'>
                             {!isLoading ? <button type='submit' className='h-10 w-full md:w-24 text-center
