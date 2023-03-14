@@ -6,14 +6,25 @@ import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
-import { BsFillCheckCircleFill } from 'react-icons/bs'
-import { FcProcess } from 'react-icons/fc'
 
 export default function OrderProuduct() {
+    // -------------------------- All States ------------------ //
     const [isLoading, setIsLoading] = useState(false)
     const [OrderData, setOrderData] = useState([])
+    const [OrderStatusDefault, setOrderStatusDefault] = useState('Change a order status')
+    const [status, setStatus] = useState('')
     const { id } = useParams();
+    const [isUpdate, setIsUpdate] = useState(false)
 
+
+    // ---------------------------- handle state change ------------------ //
+    const handleStatusChange = (e) => {
+        console.log(e.target.value);
+        setStatus(e.target.value)
+    }
+
+
+    // ------------------------ Get Order Details ------------------ //
     async function GetSellerOrderProduct() {
         setIsLoading(!isLoading)
         const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/orderbyId?orderId=${id}`, {
@@ -29,6 +40,7 @@ export default function OrderProuduct() {
             toast.error(error, toastifyoption);
             return;
         }
+        // --------------- make human readable format for date ------------ //
         const result = data.map(item => {
             const date = new Date(item.created_at);
             const updateData = new Date(item.updated_at)
@@ -42,7 +54,6 @@ export default function OrderProuduct() {
         //  -------------------- iterating over data to get varient and push into an array for fetching products ----------- //
         let varients = []
         result.forEach(element => {
-            console.table(element);
             element.products.forEach(vairentitem => {
                 varients.push(vairentitem.varientId)
             });
@@ -54,6 +65,28 @@ export default function OrderProuduct() {
         GetSellerOrderProduct();
     }, [])
 
+
+    //  ----------------------- Update Order ------------------- //
+    async function UpdateOrder() {
+        setIsUpdate(!isUpdate)
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/order/update`, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                status,
+                Orderid: id
+            })
+        })
+        const { data, error } = await response.json();
+        setIsUpdate(false)
+        if (error) return toast.error(error, toastifyoption);
+        GetSellerOrderProduct();
+        toast.success(data, toastifyoption)
+    }
+    console.clear();
     return (
         <Fragment>
             <header className='md:hidden'>
@@ -79,23 +112,23 @@ export default function OrderProuduct() {
                                         {
                                             OrderData.map(item => (
                                                 <div key={item._id} className="order_history_box border my-10 border-gray-300 shadow-sm rounded-md">
-                                                    <div className='order_history_box_header border-b border-gray-300 flex justify-between items-center px-2 md:px-5 h-24 py-10 '>
+                                                    <div className='order_history_box_header border-b dark:text-gray-200 border-gray-300 flex justify-between items-center px-2 md:px-5 h-24 py-10 '>
                                                         <div className='order_id'>
                                                             <h3 className='orderId_text font-bold'>Order Id</h3>
-                                                            <span className='order_number text-gray-600'>{item._id}</span>
+                                                            <span className='order_number text-gray-600 dark:text-gray-200 '>{item._id}</span>
                                                         </div>
                                                         <div className='order_totalPrice'>
                                                             <h3 className='ordertotalPrice_text font-bold'>Total Amount</h3>
-                                                            <span className='order_totalpriceValue text-gray-600'>{item.totalPrice}</span>
+                                                            <span className='order_totalpriceValue text-gray-600 dark:text-gray-200'>{item.totalPrice}</span>
                                                         </div>
                                                         <div className='order_date hidden sm:block'>
                                                             <h3 className='orderDate_text font-bold'>Order Date</h3>
-                                                            <span className='order_OrderDate text-gray-600'>{item.created_at}</span>
+                                                            <span className='order_OrderDate text-gray-600 dark:text-gray-200'>{item.created_at}</span>
                                                         </div>
                                                     </div>
-                                                    <div className="order_products_display_area my-5 mx-5">
+                                                    <div className="order_products_display_area my-5 mx-5 dark:text-gray-200">
                                                         {item.products.map((varient, index) => (
-                                                            <div className="order_product border-b border-gray-300 my-5 pb-5" key={index}>
+                                                            <div className="order_product  my-5 pb-5" key={index}>
                                                                 <div className='product_image_container '>
                                                                     <div className='flex space-x-3'>
                                                                         <figure className='w-28 sm:w-56'>
@@ -127,21 +160,64 @@ export default function OrderProuduct() {
                                                                 </div>
                                                                 <section className='delivary_info my-2'>
                                                                     <div className='order_status flex items-center space-x-2'>
-                                                                        {item.status == 'delivered' ?
-                                                                            <div className='flex space-x-3 items-center'>
-                                                                                <BsFillCheckCircleFill className='text-green-900 text-xl' />
-                                                                                <span className='status_text'> Deliverd on </span>
-                                                                                <h1 className='status'>
-                                                                                    {item.updated_at}
-                                                                                </h1>
-                                                                            </div> :
-                                                                            <div className='flex space-x-3 items-center'>
-                                                                                <FcProcess className='text-2xl' />
-                                                                                <span className='status_text'>Processing </span>
-                                                                            </div>
-                                                                        }
-
+                                                                        <h1 className='text-xl'>Status : <span className='capitalize'>{item.status}</span></h1>
                                                                     </div>
+                                                                    {item.status !== 'delivered' ?
+                                                                        <Fragment>
+                                                                            <form
+                                                                                className='update_order_form my-1 sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3'
+                                                                                onSubmit={(e) => {
+                                                                                    e.preventDefault();
+                                                                                    UpdateOrder();
+                                                                                }}>
+                                                                                <select
+                                                                                    defaultValue={OrderStatusDefault}
+                                                                                    onChange={handleStatusChange}
+                                                                                    className='px-2 py-1.5 outline-none  rounded-md border border-gray-400
+                                                                            focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
+                                                                            my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 dark:bg-gray-800'>
+                                                                                    <option className="dark:bg-gray-700">Change a order status</option>
+                                                                                    {
+                                                                                        item.status == 'processing' ?
+                                                                                            <option className="dark:bg-gray-700" value="shipped">Shipped</option>
+                                                                                            :
+                                                                                            null
+                                                                                    }
+                                                                                    {
+                                                                                        item.status === 'shipped' ?
+                                                                                            <option className="dark:bg-gray-700" value="delivered">Delivered</option>
+                                                                                            :
+                                                                                            null
+                                                                                    }
+                                                                                </select>
+                                                                                <div className='sumbit-btn my-1 sm:w-32'>
+                                                                                    {!isUpdate ?
+                                                                                        <button
+                                                                                            type='submit'
+                                                                                            disabled={status.length < 1 || status === OrderStatusDefault ? true : false}
+                                                                                            className='w-full h-10 text-center
+                                                                                text-white outline-none text-bold bg-indigo-800 rounded-md
+                                                                                hover:bg-indigo-700'>Update Order</button>
+                                                                                        : <button type="button"
+                                                                                            className="inline-flex items-center justify-center py-2  leading-4 
+                                                                                    text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
+                                                                                    w-full text-center transition ease-in-out duration-150 cursor-not-allowed"
+                                                                                            disabled="">
+                                                                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
+                                                                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                                                <circle className="pacity-25 text-white" cx="12" cy="12" r="10"
+                                                                                                    stroke="currentColor" strokeWidth="4"></circle>
+                                                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 
+                                                                                          018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 
+                                                                                          3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                            Processing ...
+                                                                                        </button>
+                                                                                    }
+                                                                                </div>
+                                                                            </form>
+                                                                        </Fragment> : null}
                                                                 </section>
                                                             </div>
                                                         ))}
