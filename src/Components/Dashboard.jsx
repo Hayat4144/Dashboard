@@ -1,4 +1,4 @@
-import React, { Fragment, useState, lazy, Suspense ,useEffect } from 'react'
+import React, { Fragment, useState, lazy, Suspense, useEffect } from 'react'
 import CardSkeleton from '../animation/CardSkeleton'
 import MobileSkeleton from '../animation/MobileSkeleton'
 import AsideNavbarSkeleton from '../animation/AsideNavbarSkeleton'
@@ -10,6 +10,7 @@ const MobileNavbar = lazy(() => import('../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../global/AsideNavbar'))
 const WelcomeMessage = lazy(() => import('../global/WelcomeMessage'))
 const Cards = lazy(() => import('./Cards'))
+const RevenvueCard = lazy(() => import('./RevenvueCard'))
 const OrderChart = lazy(() => import('../global/OrderChart'))
 const Sell_Transaction = lazy(() => import('../global/Sell_Transaction'))
 const ProductList = lazy(() => import('./Shop/ProductList'))
@@ -67,7 +68,11 @@ export default function Dashboard() {
                         <WelcomeMessage />
                     </Suspense>
                     <Suspense fallback={<CardSkeleton />}>
-                        <Cards />
+                        <div className='grid grid-cols-1 gap-2 mx-2 md:mx-5 lg:mx-10 md:grid-cols-2 lg:grid-cols-3'>
+                            <Cards />
+                            <RevenvueCard />
+                        </div>
+
                     </Suspense>
                     <div className='grid grid-cols-1 md:grid-cols-3 mx-2 md:mx-5 lg:mx-10 gap-5'>
                         <Suspense fallback={<OrderChartSkeleton />}>
