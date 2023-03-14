@@ -11,6 +11,7 @@ const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 
+
 export default function Products() {
     const [products, setProducts] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +20,7 @@ export default function Products() {
 
     async function FetchProduct() {
         setIsLoading(!isLoading)
-        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/products`, {
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/products?page=${currentPage}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'applicition/json'
@@ -33,7 +34,7 @@ export default function Products() {
     }
     useEffect(() => {
         FetchProduct();
-    }, [])
+    }, [currentPage])
 
 
     //  ------------------ pagination logic ----------------
