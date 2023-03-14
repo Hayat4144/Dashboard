@@ -17,7 +17,7 @@ import { toastifyoption } from "./Notification";
 import { useDispatch } from "react-redux";
 import { LOGOUT, REMOVEUSERDETAILS } from "../Context/actions/ActionsType";
 const MobileNavbar = lazy(() => import('./MobileNavbar'))
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation } from "react-router-dom";
 
 
 export default function AsideNavbar() {
@@ -26,6 +26,7 @@ export default function AsideNavbar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const Location = useLocation();
 
   // ----------------- stop scrolling if the modal is open ------------------- //
   if (isMobileViewOpen) {
@@ -94,50 +95,46 @@ export default function AsideNavbar() {
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
           )}
-          <h1 className="origin-left mx-5 dark:text-gray-200">logo</h1>
+          <h1 className="origin-left mx-5 dark:text-gray-200 text-2xl font-bold">Taj</h1>
         </div>
         <div className="nav_links">
           <ul className="my-5 mx-3 cursor-pointer">
             <Link to="/" >
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 my-1  py-2 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2 my-1  py-2 rounded-md`}>
                 <DashboardCustomizeOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Dashboard</span>
               </li>
             </Link>
             <Link to="/v3/seller/analytic">
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 my-1 py-2 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/v3/seller/analytic' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2 my-1 py-2 rounded-md`}>
                 <AnalyticsOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Analytics</span>
               </li>
             </Link>
             <Link to={'/v3/seller/orders'}>
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2 my-1  py-2 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/v3/seller/orders' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2 my-1  py-2 rounded-md`}>
                 <AddShoppingCartOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Orders</span>
               </li>
             </Link>
             <Link to="/v3/seller/products">
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/v3/seller/products' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 rounded-md`}>
                 <Inventory2OutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Products</span>
               </li>
             </Link>
             <Link to="/v3/seller/transactions">
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/v3/seller/transactions' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 rounded-md`}>
                 <PaymentsOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Transactions</span>
               </li>
             </Link>
             <Link to="/v3/seller/account">
-              <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 hover:rounded-md">
+              <li className={`space-x-3 ${Location.pathname === '/v3/seller/account' ? 'bg-indigo-600 text-white' : ''} hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 rounded-md`}>
                 <SwitchAccountOutlinedIcon className="dark:text-white" />
                 <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`}>Account</span>
               </li>
             </Link>
-            <li className="space-x-3 hover:bg-indigo-600 hover:text-white px-2  py-2 my-1 hover:rounded-md">
-              <SettingsOutlinedIcon className="dark:text-white" />
-              <span className={` ${isCollapsed ? "hidden" : ""} dark:text-gray-200`} >Settings</span>
-            </li>
             <li className="space-x-3  hover:bg-indigo-600 hover:text-white px-2 py-2 my-1  hover:rounded-md" onClick={ThemeSwithcherFunc}>
               <button>
                 {theme === "dark" ? (
@@ -150,7 +147,7 @@ export default function AsideNavbar() {
             </li>
           </ul>
         </div>
-        <div className={`logout_section relative top-28 mx-3 `}>
+        <div className={`logout_section relative top-36 mx-3 `}>
           <div
             onClick={(e) => {
               e.preventDefault();
