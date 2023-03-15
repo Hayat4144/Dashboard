@@ -36,7 +36,6 @@ const MainAnalytics = lazy(() => import('./Components/Analytics/MainAnalytics'))
 
 
 export default function App() {
-  console.clear();
   return (
     <Fragment>
       <Router>
