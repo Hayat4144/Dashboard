@@ -59,6 +59,7 @@ export default function Products() {
             setCurrentPage(currentPage - 1)
     }
 
+    console.clear()
 
     return (
         <Fragment>
@@ -80,7 +81,7 @@ export default function Products() {
                     <Suspense fallback={<TableSkeleton />}>
                         {isLoading ? <TableSkeleton /> :
                             <Fragment>
-                                <ProductList products={products} />
+                                <ProductList products={products} setproducts={setProducts} setproductcount={setTotalProductCount} />
                                 {
                                     totalProductCount > showProductPerPage ? <div className='paginations my-3 md:my-5 lg:my-10'>
                                         <section className='pagination_container my-5'>

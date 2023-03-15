@@ -119,7 +119,7 @@ export default function Dashboard() {
                     <Suspense fallback={<TableSkeleton />}>
                         {isLoading ? <TableSkeleton /> :
                             <Fragment>
-                                <ProductList products={products} />
+                                <ProductList products={products} setproducts={setProducts} />
                                 <Fragment />
                             </Fragment>
                         }

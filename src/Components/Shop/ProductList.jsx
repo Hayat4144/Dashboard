@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-export default function ProductList({ products, setproducts }) {
+export default function ProductList({ products, setproducts, setproductcount }) {
     const [isModalopen, setIsModalopen] = useState(false)
     const [selectedId, setSelectedId] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +16,21 @@ export default function ProductList({ products, setproducts }) {
         setIsModalopen(!isModalopen);
         setSelectedId(id);
     }
-   
+
+    async function FetchProduct() {
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/products`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'applicition/json'
+            },
+            credentials: 'include'
+        });
+        const { data, error, count, totalCount } = await response.json();
+        if (response.status !== 200) return toast.error(error, toastifyoption);
+        setproducts(data)
+        setproductcount(totalCount)
+    }
+
     const DeleteItem = async () => {
         setIsLoading(!isLoading)
         const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/delete/product?product_id=${selectedId}`, {
@@ -30,8 +44,9 @@ export default function ProductList({ products, setproducts }) {
         setIsLoading(false)
         if (response.status !== 200) return toast.error(error, toastifyoption);
         toast.success(data, toastifyoption)
+        FetchProduct();
         setIsModalopen(!isModalopen)
-        setproducts([])
+
     }
     return (
         <Fragment>
