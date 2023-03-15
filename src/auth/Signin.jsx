@@ -24,6 +24,8 @@ export default function Signin() {
 
   }, [])
 
+  console.log(import.meta.env.VITE_BACKEND_URL);
+
   const EmailChange = (e) => {
     setemail(e.target.value)
   }
