@@ -15,8 +15,9 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 export default function Products() {
     const [products, setProducts] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [showProductPerPage, setShowProductPerPage] = useState(5)
+    const [showProductPerPage, setShowProductPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
+    const [totalProductCount, setTotalProductCount] = useState(Number())
 
     async function FetchProduct() {
         setIsLoading(!isLoading)
@@ -27,10 +28,11 @@ export default function Products() {
             },
             credentials: 'include'
         });
-        const { data, error } = await response.json();
+        const { data, error, count, totalCount } = await response.json();
         setIsLoading(false)
         if (response.status !== 200) return toast.error(error, toastifyoption);
         setProducts(data)
+        setTotalProductCount(totalCount)
     }
     useEffect(() => {
         FetchProduct();
@@ -38,11 +40,13 @@ export default function Products() {
 
 
     //  ------------------ pagination logic ----------------
-    if (products.length > showProductPerPage) {
-        var numberofPages = Math.ceil(products.length / showProductPerPage);
+    if (totalProductCount > showProductPerPage) {
+        var numberofPages = Math.ceil(totalProductCount / showProductPerPage);
         console.log(numberofPages);
-        var page_number = [...Array(numberofPages + 1).keys()].slice(1)
+        var page_number = Array.from({ length: numberofPages }, (_, index) => index + 1);
     }
+
+    console.log(page_number);
 
     const nextPage = () => {
         if (currentPage !== numberofPages) {
@@ -78,7 +82,7 @@ export default function Products() {
                             <Fragment>
                                 <ProductList products={products} />
                                 {
-                                    products.length > showProductPerPage ? <div className='paginations my-3 md:my-5 lg:my-10'>
+                                    totalProductCount > showProductPerPage ? <div className='paginations my-3 md:my-5 lg:my-10'>
                                         <section className='pagination_container my-5'>
                                             <div className='pagination_box flex items-center justify-center space-x-5'>
                                                 <div className='previous_btn'>
