@@ -35,14 +35,15 @@ export default function Signin() {
     setIsLoading(!isLoading)
     const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/signin`, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
         password
-      })
+      }),
+      credentials:'include'
+      
     });
     const { data, error, token } = await result.json();
     setIsLoading(false)
