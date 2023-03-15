@@ -48,7 +48,7 @@ export default function Signin() {
     setIsLoading(false)
     console.log(error, data)
     if (result.status !== 200) return toast.error(error, toastifyoption);
-    Decodejwt(data, dispatch, navigate, searchParams);
+    Decodejwt(data, token, dispatch, navigate, searchParams);
   }
 
   return (
