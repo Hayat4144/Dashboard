@@ -27,9 +27,6 @@ This is an E-commerce Dashboard built using React, Tailwind CSS, Vite, Redux, an
 
 ## Screenshots
 
-
-![App Screenshot](/assets/Screenshot1.png?raw=true)
-
 ![App Screenshot](/assets/Screenshot8.png?raw=true)
 
 ![App Screenshot](/assets/Screenshot7.png?raw=true)
