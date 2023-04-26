@@ -24,6 +24,50 @@ This is an E-commerce Dashboard built using React, Tailwind CSS, Vite, Redux, an
 - Chart.js: A powerful charting library for creating interactive charts.
 - Authentication System: Implement your preferred authentication system for secure access to the dashboard.
 
+
+## Screenshots
+
+
+![App Screenshot](/assets/Screenshot1.png?raw=true)
+
+![App Screenshot](/assets/Screenshot8.png?raw=true)
+
+![App Screenshot](/assets/Screenshot7.png?raw=true)
+
+![App Screenshot](/assets/Screenshot6.png?raw=true)
+
+![App Screenshot](/assets/Screenshot9.png?raw=true)
+
+![App Screenshot](/assets/Screenshot5.png?raw=true)
+
+![App Screenshot](/assets/Screenshot4.png?raw=true)
+
+![App Screenshot](/assets/Screenshot3.png?raw=true)
+
+![App Screenshot](/assets/Screenshot2.png?raw=true)
+
+![App Screenshot](/assets/Screenshot19.png?raw=true)
+
+![App Screenshot](/assets/Screenshot20.png?raw=true)
+
+![App Screenshot](assets/Screenshot18.png?raw=true)
+
+![App Screenshot](/assets/Screenshot17.png?raw=true)
+
+![App Screenshot](/assets/Screenshot16.png?raw=true)
+
+![App Screenshot](/assets/Screenshot15.png?raw=true)
+
+![App Screenshot](/assets/Screenshot14.png?raw=true)
+
+![App Screenshot](/assets/Screenshot13.png?raw=true)
+
+![App Screenshot](/assets/Screenshot12.png?raw=true)
+
+![App Screenshot](/assets/Screenshot11.png?raw=true)
+
+![App Screenshot](/assets/Screenshot10.png?raw=true)
+
 ## Getting Started
 
 1. Clone this repository to your local machine using the below command.
