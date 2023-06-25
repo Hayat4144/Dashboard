@@ -53,48 +53,55 @@ export default function ProductList({ products, setproducts, setproductcount }) 
             <main className='flex'>
                 <div className='w-full h-full dark:bg-gray-900'>
                     {products.length > 0 ? <Fragment>
-                        <section className='transaction_data rounded-md shadow-2xl my-10 mx-2 md:mx-5 lg:mx-10 overflow-x-auto dark:bg-gray-800'>
-                            <table className='table-auto w-full'>
+                        <section className="transaction_data rounded-md shadow-2xl my-10 mx-2 md:mx-5 lg:mx-10 overflow-x-auto dark:bg-gray-800">
+                            <table className="table-auto w-full">
                                 <thead>
                                     <tr className="bg-indigo-700 text-white text-left">
-                                        <th className='px-4 py-2'>Image</th>
+                                        <th className="px-4 py-2">Image</th>
                                         <th className="px-4 py-2">Name</th>
                                         <th className="px-4 py-2">Quantity</th>
                                         <th className="px-4 py-2">Brand</th>
                                         <th className="px-4 py-2">Price</th>
-                                        <th className="px-4 py-2">Edit / delete </th>
-                                        <th className="px-4 py-2">Add varient</th>
+                                        <th className="px-4 py-2">Edit </th>
+                                        <th className="px-4 py-2">Delete</th>
+                                        <th className="px-4 py-2">Add variant</th>
                                     </tr>
                                 </thead>
-                                <tbody className='mb-2 text-left'>
-                                    {products.map((product) => <Fragment>
-                                        <tr key={product._id} className="border-b border-gray-300 dark:border-gray-500 cursor-pointer  hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-200">
-                                            <td className='px-4 py-2'>
-                                                <figure>
-                                                    <LazyLoadImage
-                                                        src={product.assets.images[0].url}
-                                                        alt="product-image"
-                                                        className="w-20 h-10 rounded-md hover:scale-150"
-                                                    />
-
-                                                </figure>
-                                            </td>
-                                            <td className="px-2 py-2">{product.name}</td>
-                                            <td className="px-2 py-2">{product.stock}</td>
-                                            <td className="px-2 py-2">{product.brand}</td>
-                                            <td className="px-2 py-2">{product.price}</td>
-                                            <td className="px-2 py-2 space-x-5">
-                                                <Link to={`/v3/seller/edit/product/${product._id}`}>
-                                                    <EditOutlinedIcon />
-                                                </Link>
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleDelete(product._id)} />
-                                            </td>
-                                            <td className="px-2 py-2"><Link to={`/v3/seller/product/add/varient/${product._id}`}>Add Vareint</Link></td>
-                                        </tr>
-                                    </Fragment>)}
+                                <tbody className="mb-2 text-left">
+                                    {products.map((product) => (
+                                        <Fragment key={product._id}>
+                                            <tr className="border-b border-gray-300 dark:border-gray-500 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-200">
+                                                <td className="px-4 py-2">
+                                                    <figure>
+                                                        <LazyLoadImage
+                                                            src={product.assets.images[0].url}
+                                                            alt="product-image"
+                                                            className="w-20 h-10 rounded-md hover:scale-150"
+                                                        />
+                                                    </figure>
+                                                </td>
+                                                <td className="px-4 py-2">{product.name}</td>
+                                                <td className="px-4 py-2">{product.stock}</td>
+                                                <td className="px-4 py-2">{product.brand}</td>
+                                                <td className="px-4 py-2">{product.price}</td>
+                                                <td className="px-4 py-2">
+                                                    <Link to={`/v3/seller/edit/product/${product._id}`}>
+                                                        <EditOutlinedIcon />
+                                                    </Link>
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    <DeleteOutlineOutlinedIcon onClick={() => handleDelete(product._id)} />
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    <Link to={`/v3/seller/product/add/varient/${product._id}`}>Add Variant</Link>
+                                                </td>
+                                            </tr>
+                                        </Fragment>
+                                    ))}
                                 </tbody>
                             </table>
                         </section>
+
                     </Fragment> :
                         <Fragment>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mx-2 md:mx-10 md:my-5'>
