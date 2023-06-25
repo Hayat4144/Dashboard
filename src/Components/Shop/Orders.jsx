@@ -1,11 +1,11 @@
 import React, { Fragment, Suspense, useState, lazy, useEffect } from 'react'
+import { BASE_URL } from '../../global/Base_URL'
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 import OrdersSample from './OrdersSample';
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import TableSkeleton from '../../animation/TableSkeleton';
-import OrderSkeleton from '../../animation/OrderSkeleton';
 import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
 import MobileSkeleton from '../../animation/MobileSkeleton';
@@ -18,22 +18,23 @@ export default function Orders() {
     const prevTendays = new Date(current_date)
     prevTendays.setDate(current_date.getDate() - 10)
     const [fromDate, setfromDate] = useState(prevTendays.toISOString().substring(0, 10));
-    console.log(prevTendays.toISOString().substring(0, 10))
-    const [toDate, setToDate] = useState(current_date.toISOString().substring(0,10))
-    const [showProductPerPage, setShowProductPerPage] = useState(5)
+    const [toDate, setToDate] = useState(current_date.toISOString().substring(0, 10))
+    const [showProductPerPage, setShowProductPerPage] = useState(20)
     const [currentPage, setCurrentPage] = useState(1)
+    const [NumberOfPages, setNumberOfPages] = useState([])
+    const [NumberOfOrders, setNumberOfOrders] = useState(0)
 
     async function GetOrder() {
         setIsLoading(!isLoading)
-        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/order`, {
+        const response = await fetch(`${BASE_URL}/v4/api/seller/order`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
-            body: JSON.stringify({ from: fromDate, to: toDate })
+            body: JSON.stringify({ from: fromDate, to: toDate, page: currentPage })
         })
-        const { data, error } = await response.json();
+        const { data, totalOrders, error } = await response.json();
         setIsLoading(false)
         if (response.status !== 200) {
             toast.success(error, toastifyoption)
@@ -46,22 +47,22 @@ export default function Orders() {
             return { ...order, date: humanReadableDate }
         })
         setOrderData(new_data)
+        setNumberOfOrders(totalOrders)
+        if (totalOrders > showProductPerPage) {
+            var numberofPages = Math.ceil(totalOrders / showProductPerPage);
+            var page_number = [...Array(numberofPages + 1).keys()].slice(1)
+            setNumberOfPages(page_number)
+        }
     }
+
 
     useEffect(() => {
         GetOrder();
-    }, [fromDate, toDate])
+    }, [fromDate, toDate, currentPage])
 
-
-    //  ------------------ pagination logic ----------------
-    if (orderData.length > showProductPerPage) {
-        var numberofPages = Math.ceil(orderData.length / showProductPerPage);
-        console.log(numberofPages);
-        var page_number = [...Array(numberofPages + 1).keys()].slice(1)
-    }
 
     const nextPage = () => {
-        if (currentPage !== numberofPages) {
+        if (currentPage !== NumberOfOrders) {
             setCurrentPage(currentPage + 1)
         }
 
@@ -126,7 +127,7 @@ export default function Orders() {
 
                     </div>
                     {
-                        orderData.length > showProductPerPage ? <div className='paginations my-16'>
+                        NumberOfOrders > showProductPerPage ? <div className='paginations my-16'>
                             <section className='pagination_container my-5'>
                                 <div className='pagination_box flex items-center justify-center space-x-5'>
                                     <div className='previous_btn'>
@@ -138,7 +139,7 @@ export default function Orders() {
                                     </div>
                                     <div className='page_number_container  flex items-center space-x-3'>
                                         {
-                                            page_number.map(pg_number => (
+                                            NumberOfPages.map(pg_number => (
                                                 <button key={pg_number}
                                                     onClick={() => {
                                                         setCurrentPage(pg_number)
