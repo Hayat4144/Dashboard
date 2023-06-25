@@ -1,56 +1,57 @@
-import React, { Fragment, lazy, Suspense, useState ,useEffect } from 'react'
+import React, { Fragment, lazy, Suspense, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toastifyoption } from '../../global/Notification';
+import { BASE_URL } from '../../global/Base_URL';
 const MobileNavbar = lazy(() => import('../../global/MobileNavbar'))
 const AsideNavbar = lazy(() => import('../../global/AsideNavbar'))
 
 export default function EditProduct() {
-    const [attributes, setAttributes] = useState('');
-    const [selectedAttributes, setSelectedAttributes] = useState([])
-    const [uploaded_images, setUploaded_images] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [productDetails, setProductDetails] = useState([])
+    const [buttonloading, setButtonloading] = useState(false)
+    const [productDetails, setProductDetails] = useState({})
     const { id } = useParams();
-    console.log(id);
-    const handleOptionChange = (event) => {
-        setAttributes(event.target.value)
-        selectedAttributes.push(event.target.value)
-    };
-    const unique_attributes = Array.from(new Set(selectedAttributes.map(item => item)))
 
     // -------------- Get Product Details ----------------- //
     async function GetProductDetails() {
         setIsLoading(!isLoading)
-        const response = await fetch('ulr', {
+        const response = await fetch(`${BASE_URL}/v4/api/product/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-        const { data, error } = await response.json();
-        setIsLoading(!isLoading)
+        const { Products, error } = await response.json();
+        setIsLoading(false)
         if (response.status !== 200) return toast.error(error, toastifyoption);
-        setProductDetails([data])
+        setProductDetails(Products)
+    }
+
+    const ProductDetailsChange = (keyparam, value) => {
+        setProductDetails((prevState) => ({ ...prevState, [keyparam]: value }))
     }
 
     useEffect(() => {
-        // GetProductDetails();
+        GetProductDetails();
     }, [])
 
     async function EditProductFunc() {
-        setIsLoading(!isLoading)
-        const response = await fetch('ulr', {
-            method: 'POST',
+        setButtonloading(!buttonloading)
+        const response = await fetch(`${BASE_URL}/v4/api/update/product`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify({})
+            body: JSON.stringify({
+                product_id: id,
+                ...productDetails
+            }),
+            credentials: 'include'
         })
         const { data, error } = await response.json();
+        setButtonloading(false)
         if (response.status !== 200) return toast.error(error, toastifyoption);
-        setIsLoading(!isLoading)
-        toast.success(data,toastifyoption)
+        toast.success(data, toastifyoption)
     }
 
 
@@ -67,16 +68,21 @@ export default function EditProduct() {
                 </Suspense>
                 <main className='w-full h-full dark:bg-gray-900'>
                     <h1 className='product_add_text dark:text-gray-200 my-5 mx-5 md:mx-8 lg:mx-10 text-2xl'>Edit product attributes</h1>
+
                     <form className='mx-5 my-5 rounded-lg  shadow-2xl
-                      px-5 dark:bg-gray-800 py-5 border border-gray-300 dark:border-none' onSubmit={(e)=>{
-                        e.preventDefault();
-                        EditProductFunc();
-                      }}>
+                      px-5 dark:bg-gray-800 py-5 border border-gray-300 dark:border-none' onSubmit={(e) => {
+                            e.preventDefault();
+                            EditProductFunc();
+                        }}>
                         <div className='products_attributes md:grid md:grid-cols-2 gap-5'>
                             <div className='product_name my-1'>
                                 <label htmlFor="name" className='dark:text-gray-200 text-gray-700'>Name</label>
                                 <input
                                     type={'text'}
+                                    value={productDetails.name}
+                                    onChange={(event) => {
+                                        ProductDetailsChange('name', event.target.value)
+                                    }}
                                     required
                                     placeholder='Enter product name'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
@@ -89,6 +95,8 @@ export default function EditProduct() {
                                 <input
                                     type={'number'}
                                     required
+                                    value={productDetails.price}
+                                    onChange={(event) => ProductDetailsChange('price', event.target.value)}
                                     placeholder='Enter product price'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
@@ -100,6 +108,10 @@ export default function EditProduct() {
                                 <input
                                     type={'number'}
                                     required
+                                    value={productDetails.stock}
+                                    onChange={(event) => {
+                                        ProductDetailsChange('stock', event.target.value)
+                                    }}
                                     placeholder='Enter product stock'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
@@ -111,6 +123,10 @@ export default function EditProduct() {
                                 <input
                                     type={'text'}
                                     required
+                                    value={productDetails.category}
+                                    onChange={(event) => {
+                                        ProductDetailsChange('category', event.target.value)
+                                    }}
                                     placeholder='Enter product category'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
@@ -122,28 +138,37 @@ export default function EditProduct() {
                                 <input
                                     type={'text'}
                                     required
+                                    value={productDetails.brand}
+                                    onChange={(event) => {
+                                        ProductDetailsChange('brand', event.target.value)
+                                    }}
                                     placeholder='Enter product brand'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                 />
                             </div>
-                            <div className='total_attributes'>
+                            {/* <div className='total_attributes'>
                                 <label htmlFor="total_attributes" className='dark:text-gray-200 text-gray-700'>Cnt</label>
                                 <input
                                     type={'number'}
                                     required
+                                    value={productDetails.varients ? productDetails.varients.cnt : ''}
                                     placeholder='Enter total attributes count'
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
                                     focus:border-indigo-800 focus:shadow-md dark:bg-inherit dark:focus:border-gray-400
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                 />
-                            </div>
+                            </div> */}
                             <div className='description col-span-2'>
                                 <label htmlFor="description" className='dark:text-gray-200 text-gray-700'>Description</label>
                                 <textarea
                                     type={'text'}
                                     required
+                                    value={productDetails.description}
+                                    onChange={(event) => {
+                                        ProductDetailsChange('description', event.target.value)
+                                    }}
                                     placeholder='write something about your product'
                                     rows={5}
                                     className='px-2 py-1.5 outline-none rounded-md border border-gray-400 text-sm 
@@ -151,7 +176,7 @@ export default function EditProduct() {
                                     my-1 w-full dark:placeholder:text-gray-200 dark:text-gray-200 placeholder:text-gray-500 appearance-none'
                                 />
                             </div>
-                            <div className='attributes col-span-2 mb-2'>
+                            {/* <div className='attributes col-span-2 mb-2'>
                                 <label htmlFor="attributes" className='dark:text-gray-200 text-gray-700'>Attributes</label>
                                 <select
                                     defaultValue={attributes}
@@ -164,16 +189,15 @@ export default function EditProduct() {
                                     <option value={'hieght'} className="dark:bg-gray-700">Hieght</option>
                                     <option value={'color'} className="dark:bg-gray-700">color</option>
                                 </select>
-                            </div>
-                            <div className='w-24 mb-5'>
-                                {!isLoading ?
+                            </div> */}
+                            <div className='w-28 mb-5'>
+                                {!buttonloading ?
                                     <button type='submit' className='w-full h-10 text-center bg-indigo-700 hover:bg-indigo-800
                                         text-white outline-none text-bold dark:bg-indigo-600 rounded-md
                                         dark:hover:bg-indigo-700'>Submit</button> : <button type="button"
-                                        className="inline-flex items-center justify-center py-2  leading-4 
-                                            text-sm shadow rounded-md text-white dark:bg-indigo-600 bg-indigo-700 hover:bg-indigo-800
-                                            w-full text-center transition ease-in-out duration-150 cursor-not-allowed"
-                                        disabled="">
+                                        className="flex items-center justify-center py-2  leading-4 
+                                            text-sm shadow rounded-md text-white dark:bg-indigo-600 bg-indigo-700 hover:bg-indigo-800 w-full text-center transition ease-in-out duration-150 cursor-not-allowed"
+                                        disabled>
                                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="pacity-25 text-white" cx="12" cy="12" r="10"
@@ -189,6 +213,7 @@ export default function EditProduct() {
                             </div>
                         </div>
                     </form>
+
                 </main>
             </div>
         </Fragment>
