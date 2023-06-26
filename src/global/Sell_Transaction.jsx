@@ -75,8 +75,10 @@ export default function Sell_Transaction() {
 
     return (
         <Fragment>
-            <div className='bg-white dark:bg-gray-800 dark:border-none shadow-md border my-5 border-gray-300 rounded-md py-2 '>
-                <Doughnut data={Chartdata} options={chartOption} ref={ChartRef} />
+            <div className='bg-white dark:bg-gray-800 dark:border-none shadow-md border my-5 border-gray-300 rounded-md '>
+                <div className='relative h-[50vh]'>
+                    <Doughnut data={Chartdata} options={chartOption} ref={ChartRef} />
+                </div>
             </div>
         </Fragment>
     )
