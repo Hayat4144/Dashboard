@@ -17,7 +17,6 @@ export default function Cards() {
         const { data, error } = await response.json();
         if (error) return toast.error(error, toastifyoption);
         setTotalOrder(data)
-        console.log(typeof TotalOrder);
     }
     async function GetTodayOrders() {
         const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/seller/today/orders`, {
@@ -36,7 +35,6 @@ export default function Cards() {
         GetTodayOrders();
     }, [])
 
-    console.clear();
     return (
         <Fragment>
             <div className='card_container my-5'>

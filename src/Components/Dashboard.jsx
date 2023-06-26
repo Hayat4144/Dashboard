@@ -31,7 +31,6 @@ export default function Dashboard() {
     const [fromDate, setfromDate] = useState(current_date.toISOString().substring(0, 10));
     const nextTendays = new Date(current_date)
     nextTendays.setDate(current_date.getDate() + 10)
-    console.log(nextTendays.toISOString().substring(0, 10))
     const [toDate, setToDate] = useState(nextTendays.toISOString().substring(0, 10))
 
     async function FetchProduct() {
