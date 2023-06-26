@@ -4,7 +4,6 @@ import Skeleton from 'react-loading-skeleton'
 export default function OrderChartSkeleton() {
     const [theme, setTheme] = useState( localStorage.getItem('theme'))
     const [Color, setColor] = useState(theme === 'dark' ? 'rgb(31 41 55)': '#ebebeb')
-    console.log(Color)
     return (
         <Fragment>
             <div className='dark:bg-gray-800 shadow-md  my-10 
